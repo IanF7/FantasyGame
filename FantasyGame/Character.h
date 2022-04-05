@@ -9,13 +9,15 @@ using namespace std;
 
 class Character 
 {
-private:
-	int str, spe, def, health, stamina, crit;
+protected:
 	int weaponIndex, armorIndex;
 
+private:
+	int str, spe, def, health, stamina, crit;
+	int maxStamina;
 public:
 	Character();
-	Character(int str, int spe, int def, int health, int stamina, int crit,
+	Character(int str, int spe, int def, int health, int stamina, int maxStamina, int crit,
 		 int weaponIndex, int armorIndex);
 	int getStr() const;
 	void setStr(int str);
@@ -27,13 +29,15 @@ public:
 	void setHealth(int Health);
 	int getStamina() const;
 	void setStamina(int stamina);
+	int getMaxStamina() const;
+	void setMaxStamina(int maxStamina);
 	int getCrit() const;
 	void setCrit(int crit);
 	int getWeaponIndex() const;
-	virtual void setWeaponIndex(int weaponIndex, Weapon* weapons);
+	virtual void setWeaponIndex();
 	int getArmorIndex() const;
-	virtual void setArmorIndex(int armorIndex, Armor* armorSets);
-	virtual void setStats(Weapon* weapons, Armor* armorSets, int weaponIndex, int armorIndex);
+	virtual void setArmorIndex();
+	virtual void setStats();
 };
 #endif
 

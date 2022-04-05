@@ -6,12 +6,11 @@ Player::Player()
 	wCount = 0;
 	aCount = 0;
 	weapons[wCount++] = new Weapon(4, 4, 4, 0, "Sword");
-	weapons[wCount++] = new Weapon(1, 1, 1, 0, "Fists");
+	weapons[wCount++] = new Weapon(5, 1, 6, 0, "Fists");
 	armorSets[aCount++] = new Armor(8, 7, 5, 0, "Warrior Armor");
-	cout << getWCount() << endl;
 }
 
-Player::Player(int str, int spe, int def, int health, int stamina, int crit, 
+Player::Player(int str, int spe, int def, int health, int stamina, int crit, int maxStamina,
 	int weaponIndex, int armorIndex, int gold, int wCount, int aCount)
 {
 	this->gold = gold;
@@ -49,65 +48,46 @@ void Player::setACount(int aCount)
 	this->aCount = aCount;
 }
 
-Weapon* Player::getWeapons() const
-{
-	return *weapons;
-}
 
-void Player::setWeapons(Weapon* weapons)
+void Player::setWeaponIndex()
 {
-}
-
-Armor* Player::getArmorSets() const
-{
-	return *armorSets;
-}
-
-void Player::setArmorSets(Armor* armorSets)
-{
-}
-
-void Player::setWeaponIndex(int weaponIndex, Weapon* weapons)
-{
-	cout << "Select weapon by entering the number of the corresponding weapon: " << endl;
-	while (weaponIndex > 0 && weaponIndex < sizeof(weapons))
+	cout << "Choose your weapon: " << endl;
+	for (int i = 0; i < getWCount(); i++)
 	{
-		for (int i = 0; i < getWCount(); i++)
-		{
-			cout << weapons[0].getWName() << "(" << i + 1 << "): " << endl;
-			cout << "str: " << weapons[i].getStr() << "  spe: " << weapons[i].getSpe() <<
-				"  def: " << weapons[i].getDef() << endl;
-		}
+		cout << weapons[i]->getWName() << "(" << i + 1 << "): " << endl;
+		cout << "str: " << weapons[i]->getStr() << "  def: " << weapons[i]->getDef() <<
+			"  spe: " << weapons[i]->getSpe() << endl;
+	}
+	do {
+		cout << "Select weapon by entering the number of the corresponding weapon: " << endl;
 		cin >> weaponIndex;
 		weaponIndex--;
-		cout << "" << endl;
-	}
+	} while (weaponIndex < 0 || weaponIndex >= sizeof(weapons));
 }
 
-void Player::setArmorIndex(int armorIndex, Armor* armorSets)
+void Player::setArmorIndex()
 {
-	cout << "Select armor by entering the number of the corresponding weapon: " << endl;
-	while (armorIndex > 0 && armorIndex <= sizeof(armorSets))
+	cout << "Choose your armor set: " << endl;
+	for (int i = 0; i < getACount(); i++)
 	{
-		for (int i = 0; i < getACount(); i++)
-		{
-			cout << armorSets[i].getAName() << "(" << i + 1 << "): " << endl;
-			cout << "str: " << armorSets[i].getStr() << "  spe: " << armorSets[i].getSpe() <<
-				"  def: " << armorSets[i].getDef() << endl;
-		}
+		cout << armorSets[i]->getAName() << "(" << i + 1 << "): " << endl;
+		cout << "str: " << armorSets[i]->getStr() << "  def: " << armorSets[i]->getDef() <<
+			"  spe: " << armorSets[i]->getSpe() << endl;
+	}
+	do {
+		cout << "Select armor ser by entering the number of the corresponding armor set: " << endl;
 		cin >> armorIndex;
 		armorIndex--;
-		cout << "" << endl;
-	}
+	} while (armorIndex < 0 || armorIndex >= sizeof(armorSets));
 }
 
-void Player::setStats(Weapon* weapons, Armor* armorSets, int weaponIndex, int armorIndex)
+void Player::setStats()
 {
-	setWeaponIndex(weaponIndex, weapons);
-	setArmorIndex(armorIndex, armorSets);
-	setStr(20 + weapons[getWeaponIndex()].getStr() + armorSets[getArmorIndex()].getStr());
-	setSpe(20 + weapons[getWeaponIndex()].getSpe() + armorSets[getArmorIndex()].getSpe());
-	setDef(20 + weapons[getWeaponIndex()].getDef() + armorSets[getArmorIndex()].getDef());
+	setWeaponIndex();
+	setArmorIndex();
+	setStr(20 + weapons[getWeaponIndex()]->getStr() + armorSets[getArmorIndex()]->getStr());
+	setSpe(20 + weapons[getWeaponIndex()]->getSpe() + armorSets[getArmorIndex()]->getSpe());
+	setDef(20 + weapons[getWeaponIndex()]->getDef() + armorSets[getArmorIndex()]->getDef());
 	if (getSpe() < 20)
 	{
 		setCrit(20);
@@ -117,5 +97,9 @@ void Player::setStats(Weapon* weapons, Armor* armorSets, int weaponIndex, int ar
 		setCrit(20 - ((20 - getSpe()) / 2));
 	}
 	setHealth(50);
-	setStamina(50);
+	int stam = ((getStr() + getDef()) / 2) + 20;
+	setStamina(stam);
+	setMaxStamina(stam);
+	cout << "Weapon: " << weapons[getWeaponIndex()]->getWName() << endl;
+	cout << "Armor: " << armorSets[getArmorIndex()]->getAName() << endl;
 }

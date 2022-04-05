@@ -2,6 +2,7 @@
 #include "Character.h"
 #include "Weapon.h"
 #include "Armor.h"
+#include <vector>
 
 using namespace std;
 
@@ -10,9 +11,10 @@ Character::Character()
 	str = spe = def = stamina = crit = 20;
 	health = 50;
 	weaponIndex = armorIndex = 0;
+	maxStamina = 0;
 }
 
-Character::Character(int str, int spe, int def, int health, int stamina, int crit, 
+Character::Character(int str, int spe, int def, int health, int stamina, int maxStamina, int crit, 
 	 int weaponIndex, int armorIndex)
 {
 	this->str = str;
@@ -20,6 +22,7 @@ Character::Character(int str, int spe, int def, int health, int stamina, int cri
 	this->def = def;
 	this->health = health;
 	this->stamina = stamina;
+	this->maxStamina = maxStamina;
 	this->crit = crit;
 	this->weaponIndex = weaponIndex;
 	this->armorIndex = armorIndex;
@@ -76,6 +79,16 @@ void Character::setStamina(int stamina)
 	this->stamina = stamina;
 }
 
+int Character::getMaxStamina() const
+{
+	return maxStamina;
+}
+
+void Character::setMaxStamina(int maxStamina)
+{
+	this->maxStamina = maxStamina;
+}
+
 int Character::getCrit() const
 {
 	return crit;
@@ -91,7 +104,7 @@ int Character::getWeaponIndex() const
 	return weaponIndex;
 }
 
-void Character::setWeaponIndex(int weaponIndex, Weapon* weapons)
+void Character::setWeaponIndex()
 {
 	this->weaponIndex = weaponIndex;
 }
@@ -101,14 +114,15 @@ int Character::getArmorIndex() const
 	return armorIndex;
 }
 
-void Character::setArmorIndex(int armorIndex, Armor* armorSets)
+void Character::setArmorIndex()
 {
 	this->armorIndex = armorIndex;
 }
 
-void Character::setStats(Weapon* weapons, Armor* armorSets, int weaponIndex, int armorIndex)
+void Character::setStats()
 {
-	weaponIndex = armorIndex = 0;
+	armorIndex = 0;
+	weaponIndex = 0;
 }
 
 
