@@ -125,4 +125,13 @@ void Character::setStats()
 	weaponIndex = 0;
 }
 
+void Character::showStats()
+{
+	cout << "Health: " << endl;
+	cout << "Str: " << endl;
+	cout << "Def: " << endl;
+	cout << "Spe: " << endl;
+	cout << "Stamina: " << endl;
+}
+
 

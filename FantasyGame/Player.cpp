@@ -2,7 +2,7 @@
 
 Player::Player()
 {
-	gold = 0;
+	gold = 100;
 	wCount = 0;
 	aCount = 0;
 	weapons[wCount++] = new Weapon(4, 4, 4, 0, "Sword");
@@ -48,7 +48,6 @@ void Player::setACount(int aCount)
 	this->aCount = aCount;
 }
 
-
 void Player::setWeaponIndex()
 {
 	cout << "Choose your weapon: " << endl;
@@ -59,7 +58,7 @@ void Player::setWeaponIndex()
 			"  spe: " << weapons[i]->getSpe() << endl;
 	}
 	do {
-		cout << "Select weapon by entering the number of the corresponding weapon: " << endl;
+		cout << "Select armor set by entering the number of the corresponding armor set: " << endl;
 		cin >> weaponIndex;
 		weaponIndex--;
 	} while (weaponIndex < 0 || weaponIndex >= sizeof(weapons));
@@ -75,7 +74,7 @@ void Player::setArmorIndex()
 			"  spe: " << armorSets[i]->getSpe() << endl;
 	}
 	do {
-		cout << "Select armor ser by entering the number of the corresponding armor set: " << endl;
+		cout << "Select armor set by entering the number of the corresponding armor set: " << endl;
 		cin >> armorIndex;
 		armorIndex--;
 	} while (armorIndex < 0 || armorIndex >= sizeof(armorSets));
@@ -100,6 +99,27 @@ void Player::setStats()
 	int stam = ((getStr() + getDef()) / 2) + 20;
 	setStamina(stam);
 	setMaxStamina(stam);
-	cout << "Weapon: " << weapons[getWeaponIndex()]->getWName() << endl;
-	cout << "Armor: " << armorSets[getArmorIndex()]->getAName() << endl;
 }
+
+void Player::showStats()
+{
+	cout << "Your Stats: " << endl;
+	cout << "     Weapon: " << weapons[getWeaponIndex()]->getWName() << endl;
+	cout << "     Armor: " << armorSets[getArmorIndex()]->getAName() << endl;
+	cout << "     Health: " << getHealth() << endl;
+	cout << "     Str: " << getStr() << endl;
+	cout << "     Def: " << getDef() << endl;
+	cout << "     Spe: " << getSpe() << endl;
+	cout << "     Stamina: " << getMaxStamina() << endl;
+	cout << "" << endl;
+}
+
+void Player::updateWeapons(Weapon* weapon)
+{
+	weapons[wCount++] = weapon;
+	for (int i = 0; i < wCount; i++)
+	{
+		cout << weapons[i]->getWName() << endl;
+	}
+}
+

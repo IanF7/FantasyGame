@@ -23,6 +23,7 @@ public:
 	void setWeaponIndex();
 	void setArmorIndex();
 	void setStats();
+	void showStats();
 	int getReward() const;
 	void setReward(int reward);
 };

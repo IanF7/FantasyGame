@@ -3,506 +3,384 @@
 
 using namespace std;
 
-Arena::Arena() {};
 
-Arena::Arena(Player p1, Enemy e1)
+Arena::Arena() 
 {
-	this->p1 = p1;
-	this->e1 = e1;
+	playerDamage = 0;
+	enemyDamage = 0;
 }
 
-void Arena::fight(Player &p1, Enemy &e1)
+Arena::Arena(int playerDamage, int enemyDamage)
 {
-	cout << "BATTLE BEGIN" << endl;
+	this->playerDamage = playerDamage;
+	this->enemyDamage = enemyDamage;
+}
+
+void Arena::battle(Player player, Enemy enemy)
+{
+	int input = 0;
+	int damageP = 0;
+	int damageE = 0;
+	int enemyAttack = rand() % 9 + 1;
+	bool pFasterE = false;
+	player.setStats();
+	enemy.setStats();
+	player.showStats();
+	enemy.showStats();
+	cout << "BATTLE BEGIN!" << endl;
 	cout << "" << endl;
-	string input = "";
-	int damageTo = 0;
-	int damageFrom = 0;
-	int enemyAttack = 0;
-	if (p1.getSpe() > e1.getSpe())
+	cout << "" << endl;
+	cout << "Your Health: " << player.getHealth() << " Your Stamina: "
+		<< player.getStamina() << endl;
+	cout << "Enemy Health: " << enemy.getHealth() << endl;
+	//add check for speed here
+	if (player.getSpe() >= enemy.getSpe())
 	{
 		cout << "You get the first attack!" << endl;
-		cout << "" << endl;
-		do
-		{
-			//prints out details and takes in user inputted action
-			cout << "Your Health: " << p1.getHealth() << " Your Stamina: "
-				<< p1.getStamina() << endl;
-			cout << "Enemy Health: " << e1.getHealth() << endl;
-			cout << "" << endl;
-			cout << "Enter the number of the corresponding action: " << endl;
-			cout <<	"Attack(1): 0 Stamina  Strong Attack(2): 10 Stamina  "
-				"Block(3): 10 Stamina  Dodge(4): 15 Stamina" << endl;
-			cin >> input;
-			//checks if stamina allows for inputted action
-			if (p1.getStamina() < 15 && input == "4")
-			{
-				while (input != "1" && input != "2" && input != "3")
-				{
-					cout << "You don't have enough stamina! Select another action: " << endl;
-					cin >> input;
-				}
-			}
-			else if (p1.getStamina() < 10 && (input == "4" || input == "3" || input == "2"))
-			{
-				while (input != "1")
-				{
-					cout << "You don't have enough stamina! Select another action: " << endl;
-					cin >> input;
-				}
-			}
-			//sets enemy's attack
-			enemyAttack = rand() % 9 + 1;
-			//checks if enemy's attack allows for action
-			if (e1.getStamina() < 10)
-			{
-				enemyAttack = 1;
-			}
-			else if (e1.getStamina() < 15)
-			{
-				enemyAttack = rand() % 8 + 1;
-			}
-			//checks if user inputted 1 or 2 for an attack
-			if (input == "1")
-			{
-				damageTo = attackP(p1, e1);
-				cout << "You attack the enemy" << endl;
-			}
-			else if (input == "2")
-			{
-				p1.setStamina(p1.getStamina() - 10);
-				damageTo = attackP(p1, e1) + 5;
-				cout << "You attack strongly!" << endl;
-			}
-			//if the damage is less than 5, sets it equal to 5
-			if (damageTo < 5)
-			{
-				damageTo = 5;
-			}
-			//if enemy's action is defensive, subtracts damage from user's attack
-			if (enemyAttack == 8 || enemyAttack == 9)
-			{
-				cout << "" << endl;
-				cout << "Enemy is defending!" << endl;
-				e1.setStamina(e1.getStamina() - 10);
-				damageTo -= 5;
-				damageFrom = 0;
-			}
-			else if (enemyAttack == 10)
-			{
-				cout << "" << endl;
-				cout << "Enemy dodged attack!" << endl;
-				e1.setStamina(e1.getStamina() - 20);
-				damageTo = 0;
-				damageFrom = 0;
-			}
-			if (input == "3" || input == "4")
-			{
-				damageTo = 0;
-			}
-			//sets enemy health to current health minus damage
-			e1.setHealth(e1.getHealth() - damageTo);
-			//if the enemy health reaches 0, prints out the following and ends the battle
-			if (e1.getHealth() <= 0)
-			{
-				e1.setHealth(0);
-				cout << "" << endl;
-				cout << "Your Health: " << p1.getHealth() << " Your Stamina: "
-					<< p1.getStamina() << endl;
-				cout << "Enemy Health: " << e1.getHealth() << endl;
-				cout << "You Win!" << endl;
-				p1.setGold(e1.getReward() + p1.getGold());
-				cout << "Gold Earned: " << e1.getReward() << "   Total Gold: " <<
-					p1.getGold() << endl;
-				break;
-			}
-			cout << "" << endl;
-			//if enemy attacks, sets damage
-			if (enemyAttack <= 5)
-			{
-				cout << "Enemy attacks!" << endl;
-				damageFrom = attackE(e1, p1);
-			}
-			else if (enemyAttack == 6 || enemyAttack == 7)
-			{
-				cout << "Enemy attacks strongly!" << endl;
-				damageFrom = attackE(e1, p1) + 5;
-				e1.setStamina(e1.getStamina() - 10);
-			}
-			//if damage is less than 5, sets it equal to 5
-			if (damageFrom < 5)
-			{
-				damageFrom = 5;
-			}
-			if (enemyAttack >= 8)
-			{
-				damageFrom = 0;
-			}
-			//if user's action is defensive, subtracts damage from enemy's attack
-			if (input == "3")
-			{
-				p1.setStamina(p1.getStamina() - 10);
-				damageFrom -= 5;
-				damageTo = 0;
-				cout << "You are defending!" << endl;
-			}
-			if (input == "4")
-			{
-				p1.setStamina(p1.getStamina() - 15);
-				damageFrom = 0;
-				damageTo = 0;
-				cout << "Dodged attack!" << endl;
-			}
-			//sets player health equal to current health minus damage
-			p1.setHealth(p1.getHealth() - damageFrom);
-			cout << "" << endl;
-			//if player health reaches 0, prints out the following and ends the battle
-			if (p1.getHealth() <= 0)
-			{
-				p1.setHealth(0);
-				cout << "" << endl;
-				cout << "Your Health: " << p1.getHealth() << " Your Stamina: "
-					<< p1.getStamina() << endl;
-				cout << "Enemy Health: " << e1.getHealth() << endl;
-				cout << "You Lost!" << endl;
-				break;
-			}
-			if (p1.getStamina() <= (p1.getMaxStamina() - 3))
-			{
-				cout << "Recovered 5 stamina" << endl;
-				p1.setStamina(p1.getStamina() + 3);
-			}
-			if (e1.getStamina() <= (e1.getMaxStamina() - 3))
-			{
-				e1.setStamina(p1.getStamina() + 3);
-			}
-		} 
-		while (p1.getHealth() >= 0 && e1.getHealth() >= 0);
+		pFasterE = true;
 	}
 	else
 	{
-	cout << "Enemy gets the first attack!" << endl;
-	cout << "" << endl;
-		do
-		{
-			//prints out details and takes in user inputted action
-			cout << "Your Health: " << p1.getHealth() << " Your Stamina: "
-				<< p1.getStamina() << endl;
-			cout << "Enemy Health: " << e1.getHealth() << endl;
-			cout << "" << endl;
-			cout << "Enter the number of the corresponding action: " << endl;
-			cout << "Attack(1): 0 Stamina  Strong Attack(2): 10 Stamina  "
-				"Block(3): 10 Stamina  Dodge(4): 20 Stamina" << endl;
-			cin >> input;
-			//checks if stamina allows for inputted action
-			if (p1.getStamina() < 15 && input == "4")
-			{
-				while (input != "1" && input != "2" && input != "3")
-				{
-					cout << "You don't have enough stamina! Select another action: " << endl;
-					cin >> input;
-				}
-			}
-			else if (p1.getStamina() < 10 && (input == "4" || input == "3" || input == "2"))
-			{
-				while (input != "1")
-				{
-					cout << "You don't have enough stamina! Select another action: " << endl;
-					cin >> input;
-				}
-			}
-			//sets enemy attck
-			enemyAttack = rand() % 9 + 1;
-			//checks if enemy's stamina allows for action
-			if (e1.getStamina() < 10)
-			{
-				enemyAttack = 1;
-			}
-			else if (e1.getStamina() < 15)
-			{
-				enemyAttack = rand() % 8 + 1;
-			}
-			cout << "" << endl;
-			//if enemy attcks, sets damage
-			if (enemyAttack <= 5)
-			{
-				cout << "Enemy attacks!" << endl;
-				damageFrom = attackE(e1, p1);
-			}
-			else if (enemyAttack == 6 || enemyAttack == 7)
-			{
-				cout << "Enemy attacks strongly!" << endl;
-				damageFrom = attackE(e1, p1) + 5;
-				e1.setStamina(e1.getStamina() - 10);
-			}
-			//if the damage is less than 5, sets it equal to 5
-			if (damageFrom < 5)
-			{
-				damageFrom = 5;
-			}
-			if (enemyAttack >= 8)
-			{
-				damageFrom = 0;
-			}
-			//if user's action is defensive, subtracts damage from enemy's attack
-			if (input == "3")
-			{
-				p1.setStamina(p1.getStamina() - 10);
-				damageFrom -= 5;
-				damageTo = 0;
-				cout << "You are defending!" << endl;
-			}
-			if (input == "4")
-			{
-				p1.setStamina(p1.getStamina() - 15);
-				damageFrom = 0;
-				damageTo = 0;
-				cout << "You dodged the attack" << endl;
-			}
-			//sets player health equal to current health minus damage
-			p1.setHealth(p1.getHealth() - damageFrom);
-			cout << "" << endl;
-			//if player health reaches 0, prints out the following and ends the battle
-			if (p1.getHealth() <= 0)
-			{
-				p1.setHealth(0);
-				cout << "" << endl;
-				cout << "Your Health: " << p1.getHealth() << " Your Stamina: "
-					<< p1.getStamina() << endl;
-				cout << "Enemy Health: " << e1.getHealth() << endl;
-				cout << "You Lost!" << endl;
-				break;
-			}
-			//if player attacks, sets damage
-			if (input == "1")
-			{
-				damageTo = attackP(p1, e1);
-				cout << "You attack the enemy!" << endl;
-			}
-			else if (input == "2")
-			{
-				p1.setStamina(p1.getStamina() - 10);
-				damageTo = attackP(p1, e1) + 5;
-				cout << "You attack the enemy strongly!" << endl;
-			}
-			//if damage is less than 5, sets damage equal to 5
-			if (damageTo < 5)
-			{
-				damageTo = 5;
-			}
-			if (input == "3" || input == "4")
-			{
-				damageFrom = 0;
-			}
-			//if enemy's action is defensive, subtracts damage from user's attack
-			if (enemyAttack == 8 || enemyAttack == 9)
-			{
-				cout << "Enemy is defending!" << endl;
-				e1.setStamina(e1.getStamina() - 10);
-				damageTo -= 5;
-				damageFrom = 0;
-			}
-			else if (enemyAttack == 10)
-			{
-				cout << "Enemy dodged attack!" << endl;
-				e1.setStamina(e1.getStamina() - 15);
-				damageTo = 0;
-				damageFrom = 0;
-			}
-			//sets enemy health equal to current health minus damage
-			e1.setHealth(e1.getHealth() - damageTo);
-			//if the enemy health reaches 0, prints out the following and ends the battle
-			if (e1.getHealth() <= 0)
-			{
-				e1.setHealth(0);
-				cout << "" << endl;
-				cout << "Your Health: " << p1.getHealth() << " Your Stamina: "
-					<< p1.getStamina() << endl;
-				cout << "Enemy Health: " << e1.getHealth() << endl;
-				cout << "You Win!" << endl;
-				p1.setGold(e1.getReward() + p1.getGold());
-				cout << "Gold Earned: " << e1.getReward() << "   Total Gold: " <<
-					p1.getGold() << endl;
-				break;
-			}
-			if (p1.getStamina() <= (p1.getMaxStamina() - 3))
-			{
-				cout << "Recovered 5 stamina" << endl;
-				p1.setStamina(p1.getStamina() + 3);
-			}
-			if (e1.getStamina() <= (e1.getMaxStamina() - 3))
-			{
-				e1.setStamina(p1.getStamina() + 3);
-			}
-		}
-		while (p1.getHealth() >= 0 && e1.getHealth() >= 0);
+		cout << "Enemy gets the first attack!" << endl;
+		pFasterE = false;
 	}
-}
-
-void Arena::bossFight(Player& p1, Dragon& d1)
-{
-	string input = "";
-	int dragonAttack = rand() % 6 + 1;
-	int damageTo = 0;
-	int damageFrom = 0;
-	cout << "Dragon Battle, START!" << endl;
-	do {
-		//prints out details and takes in user inputted action
-		cout << "Your Health: " << p1.getHealth() << " Your Stamina: "
-			<< p1.getStamina() << endl;
-		cout << "Dragon Health: " << d1.getHealth() << endl;
-		cout << "" << endl;
+	cout << "" << endl;
+	do
+	{
+		setPlayerDamage(player, enemy);
+		setEnemyDamage(enemy, player);
 		cout << "Enter the number of the corresponding action: " << endl;
 		cout << "Attack(1): 0 Stamina  Strong Attack(2): 10 Stamina  "
 			"Block(3): 10 Stamina  Dodge(4): 15 Stamina" << endl;
 		cin >> input;
+		if (input < 1 || input > 4)
+		{
+			do 
+			{
+				cout << "Please enter a valid number: " << endl;
+				cin >> input;
+			} while (input < 1 || input > 4);
+		}
 		//checks if stamina allows for inputted action
-		if (p1.getStamina() <= 10 && input == "4")
+		if (player.getStamina() < 15 && input == 4)
 		{
-			while (input != "1" && input != "2" && input != "3")
+			while (input != 1 && input != 2 && input != 4)
 			{
 				cout << "You don't have enough stamina! Select another action: " << endl;
 				cin >> input;
 			}
 		}
-		else if (p1.getStamina() < 10 && (input == "4" || input == "3" || input == "2"))
+		else if (player.getStamina() < 10 && (input == 4 || input == 3 || input == 2))
 		{
-			while (input != "1")
+			while (input != 1)
 			{
 				cout << "You don't have enough stamina! Select another action: " << endl;
 				cin >> input;
 			}
 		}
-		//checks if user inputted 1 or 2 for an attack
-		if (input == "1")
+		if (enemy.getStamina() < 10)
 		{
-			damageTo = pAttackD(p1, d1);
-			cout << "You attack the dragon!" << endl;
+			enemyAttack = 1;
 		}
-		else if (input == "2")
+		else if (enemy.getStamina() < 15)
 		{
-			p1.setStamina(p1.getStamina() - 10);
-			damageTo = pAttackD(p1, d1) + 5;
-			cout << "You attack the dragon strongly!" << endl;
+			enemyAttack = rand() % 8 + 1;
 		}
-		//if the damage is less than 5, sets it equal to 5
-		if (damageTo < 5)
+		cout << "" << endl;
+		//player's turn if offence
+		if (input == 1)
 		{
-			damageTo = 5;
+			cout << "You attack the enemy!" << endl;
+			damageP = getPlayerDamage();
 		}
-		if (input == "3" || input == "4")
+		else if (input == 2)
 		{
-			damageTo = 0;
+			cout << "You strongly attack the enemy!" << endl;
+			damageP = getPlayerDamage() + 5;
+			player.setStamina(player.getStamina() - 10);
 		}
-		d1.setHealth(d1.getHealth() - damageTo);
-		if (d1.getHealth() <= 0)
+		//enemy's turn if offence
+		if (enemyAttack < 6)
 		{
-			d1.setHealth(0);
+			cout << "The enemy attacks!" << endl;
+			damageE = getEnemyDamage();
+		}
+		else if (enemyAttack == 6 || enemyAttack == 7)
+		{
+			cout << "The enemy attacks you strongly!" << endl;
+			damageE = getEnemyDamage() + 5;
+			enemy.setStamina(enemy.getStamina() - 10);
+		}
+		//player's turn if defensive
+		if (input == 3)
+		{
+			cout << "You enter a defensive stance!" << endl;
+			damageE = getEnemyDamage() - 5;
+			damageP = 0;
+			player.setStamina(player.getStamina() - 10);
+		}
+		else if (input == 4)
+		{
+			cout << "You dodge the enemy!" << endl;
+			damageE = 0;
+			damageP = 0;
+			player.setStamina(player.getStamina() - 15);
+		}
+		//enemy's turn if defensive
+		if (enemyAttack == 8 || enemyAttack == 9)
+		{
+			cout << "The enemy enters a defensive stance!" << endl;
+			damageP = getPlayerDamage() - 5;
+			damageE = 0;
+			enemy.setStamina(enemy.getStamina() - 10);
+		}
+		else if (enemyAttack == 10)
+		{
+			cout << "The enemy dodges!" << endl;
+			damageP = 0;
+			damageE = 0;
+			enemy.setStamina(enemy.getStamina() - 15);
+		}
+		if (pFasterE)
+		{
+			//sets enemy health and checks if it equals 0
+			enemy.setHealth(enemy.getHealth() - damageP);
+			if (enemy.getHealth() <= 0)
+			{
+				enemy.setHealth(0);
+				cout << "" << endl;
+				cout << "Your Health: " << player.getHealth() << " Your Stamina: "
+					<< player.getStamina() << endl;
+				cout << "Enemy Health: " << enemy.getHealth() << endl;
+				cout << "You Win!" << endl;
+				player.setGold(enemy.getReward() + player.getGold());
+				cout << "Gold Earned: " << enemy.getReward() << "   Total Gold: " <<
+					player.getGold() << endl;
+				break;
+			}
+			//sets player health and checks if it equals 0
+			player.setHealth(player.getHealth() - damageE);
+			if (player.getHealth() <= 0)
+			{
+				player.setHealth(0);
+				cout << "" << endl;
+				cout << "Your Health: " << player.getHealth() << " Your Stamina: "
+					<< player.getStamina() << endl;
+				cout << "Enemy Health: " << enemy.getHealth() << endl;
+				cout << "You Lost!" << endl;
+				break;
+			}
+		}
+		else
+		{
+			//sets player health and checks if it equals 0
+			player.setHealth(player.getHealth() - damageE);
+			if (player.getHealth() <= 0)
+			{
+				player.setHealth(0);
+				cout << "" << endl;
+				cout << "Your Health: " << player.getHealth() << " Your Stamina: "
+					<< player.getStamina() << endl;
+				cout << "Enemy Health: " << enemy.getHealth() << endl;
+				cout << "You Lost!" << endl;
+				break;
+			}
+			//sets enemy health and checks if it equals 0
+			enemy.setHealth(enemy.getHealth() - damageP);
+			if (enemy.getHealth() <= 0)
+			{
+				enemy.setHealth(0);
+				cout << "" << endl;
+				cout << "Your Health: " << player.getHealth() << " Your Stamina: "
+					<< player.getStamina() << endl;
+				cout << "Enemy Health: " << enemy.getHealth() << endl;
+				cout << "You Win!" << endl;
+				player.setGold(enemy.getReward() + player.getGold());
+				cout << "Gold Earned: " << enemy.getReward() << "   Total Gold: " <<
+					player.getGold() << endl;
+				break;
+			}
+		}
+		//recovers stamina
+		if (player.getStamina() <= player.getMaxStamina() - 3)
+		{
+			player.setStamina(player.getStamina() + 3);
+		}
+		if (enemy.getStamina() <= enemy.getMaxStamina() - 3)
+		{
+			enemy.setStamina(enemy.getStamina() + 3);
+		}
+		//prints out current health for you and the enemy
+		cout << "" << endl;
+		cout << "Your Health: " << player.getHealth() << " Your Stamina: "
+			<< player.getStamina() << endl;
+		cout << "Enemy Health: " << enemy.getHealth() << endl;
+		cout << "" << endl;
+	} while (player.getHealth() >= 0 && enemy.getHealth() >= 0);
+}
+
+void Arena::bossBattle(Player player, Dragon dragon)
+{
+	int input = 0;
+	int damageP = 0;
+	int damageE = 0;
+	int enemyAttack = rand() % 6 + 1;
+	player.setStats();
+	dragon.setStats();
+	cout << "BATTLE BEGIN!" << endl;
+	cout << "" << endl;
+	cout << "" << endl;
+	cout << "Your Health: " << player.getHealth() << " Your Stamina: "
+		<< player.getStamina() << endl;
+	cout << "Enemy Health: " << dragon.getHealth() << endl;
+	//add check for speed here
+	cout << "" << endl;
+	do
+	{
+		setPlayerDamage(player, dragon);
+		cout << "Enter the number of the corresponding action: " << endl;
+		cout << "Attack(1): 0 Stamina  Strong Attack(2): 10 Stamina  "
+			"Block(3): 10 Stamina  Dodge(4): 15 Stamina" << endl;
+		cin >> input;
+		if (input < 1 || input > 4)
+		{
+			do
+			{
+				cout << "Please enter a valid number: " << endl;
+				cin >> input;
+			} while (input < 1 || input > 4);
+		}
+		//checks if stamina allows for inputted action
+		if (player.getStamina() < 15 && input == 4)
+		{
+			while (input != 1 && input != 2 && input != 3)
+			{
+				cout << "You don't have enough stamina! Select another action: " << endl;
+				cin >> input;
+			}
+		}
+		else if (player.getStamina() < 10 && (input == 4 || input == 3 || input == 2))
+		{
+			while (input != 1)
+			{
+				cout << "You don't have enough stamina! Select another action: " << endl;
+				cin >> input;
+			}
+		}
+		cout << "" << endl;
+		//player's turn if offence
+		if (input == 1)
+		{
+			cout << "You attack the enemy!" << endl;
+			damageP = getPlayerDamage();
+		}
+		else if (input == 2)
+		{
+			cout << "You strongly attack the enemy!" << endl;
+			damageP = getPlayerDamage() + 5;
+			player.setStamina(player.getStamina() - 10);
+		}
+		//dragon's turn
+		if (enemyAttack < 5)
+		{
+			cout << "The dragon waits to see what you will do..." << endl;
+			damageE = 0;
+		}
+		else if (enemyAttack == 5 || enemyAttack == 6)
+		{
+			cout << "The dragon attacks you with its claws!" << endl;
+			damageE = 7;
+		}
+		else if (enemyAttack == 7)
+		{
+			cout << "The dragon attacks with its fire!" << endl;
+			damageE = 15;
+		}
+		//player's turn if defensive
+		if (input == 3)
+		{
+			cout << "You enter a defensive stance!" << endl;
+			damageE -= 5;
+			damageP = 0;
+			player.setStamina(player.getStamina() - 10);
+		}
+		else if (input == 4)
+		{
+			cout << "You dodge the enemy!" << endl;
+			damageE = 0;
+			damageP = 0;
+			player.setStamina(player.getStamina() - 15);
+		}
+		//sets enemy health and checks if it equals 0
+		dragon.setHealth(dragon.getHealth() - damageP);
+		if (dragon.getHealth() <= 0)
+		{
+			dragon.setHealth(0);
 			cout << "" << endl;
-			cout << "Your Health: " << p1.getHealth() << " Your Stamina: "
-				<< p1.getStamina() << endl;
-			cout << "Boss Health: " << d1.getHealth() << endl;
+			cout << "Your Health: " << player.getHealth() << " Your Stamina: "
+					<< player.getStamina() << endl;
+			cout << "Enemy Health: " << dragon.getHealth() << endl;
 			cout << "You Win!" << endl;
-			p1.setGold(d1.getReward() + p1.getGold());
-			cout << "Gold Earned: " << d1.getReward() << "   Total Gold: " <<
-				p1.getGold() << endl;
+			player.setGold(dragon.getReward() + player.getGold());
+			cout << "Gold Earned: " << dragon.getReward() << "   Total Gold: " <<
+				player.getGold() << endl;
 			break;
 		}
-		if (dragonAttack <= 4)
+		//sets player health and checks if it equals 0
+		player.setHealth(player.getHealth() - damageE);
+		if (player.getHealth() <= 0)
 		{
-			cout << "The dragon is waiting to see what you will do..." << endl;
-		}
-		else if (dragonAttack == 5 || dragonAttack == 6)
-		{
-			cout << "The dragon attacks you with it's claws!" << endl;
-			damageFrom = 7;
-		}
-		else if (dragonAttack == 7)
-		{
-			cout << "The dragon attacks you with it's fire breath!" << endl;
-			damageFrom = 15;
-		}
-		//if user's action is defensive, subtracts damage from enemy's attack
-		if (input == "3")
-		{
-			p1.setStamina(p1.getStamina() - 10);
-			damageFrom -= 5;
-			damageTo = 0;
-			cout << "You are defending!" << endl;
-		}
-		if (input == "4")
-		{
-			p1.setStamina(p1.getStamina() - 15);
-			damageFrom = 0;
-			damageTo = 0;
-			cout << "You dodged the attack!" << endl;
-		}
-		if (p1.getStamina() <= 45)
-		{
-			cout << "Recovered 5 stamina" << endl;
-			p1.setStamina(p1.getStamina() + 5);
-		}
-		if (e1.getStamina() <= 45)
-		{
-			e1.setStamina(p1.getStamina() + 5);
-		}
-		p1.setHealth(p1.getHealth() - damageFrom);
-		if (p1.getHealth() <= 0)
-		{
-			p1.setHealth(0);
+			player.setHealth(0);
 			cout << "" << endl;
-			cout << "Your Health: " << p1.getHealth() << " Your Stamina: "
-				<< p1.getStamina() << endl;
-			cout << "Boss Health: " << d1.getHealth() << endl;
-			cout << "You Lose" << endl;
+			cout << "Your Health: " << player.getHealth() << " Your Stamina: "
+				<< player.getStamina() << endl;
+			cout << "Enemy Health: " << dragon.getHealth() << endl;
+			cout << "You Lost!" << endl;
 			break;
 		}
-	} while (d1.getHealth() >= 0 && p1.getHealth() >= 0);
+		//recovers stamina
+		if (player.getStamina() <= player.getMaxStamina() - 3)
+		{
+			player.setStamina(player.getStamina() + 3);
+		}
+		//prints out current health for you and the enemy
+		cout << "" << endl;
+		cout << "Your Health: " << player.getHealth() << " Your Stamina: "
+			<< player.getStamina() << endl;
+		cout << "Enemy Health: " << dragon.getHealth() << endl;
+		cout << "" << endl;
+	} while (player.getHealth() >= 0 && dragon.getHealth() >= 0);
 }
 
-int Arena::attackP(Player &p1, Enemy &e1)
+void Arena::setPlayerDamage(Player player, Enemy enemy)
 {
-	int crit = rand() % (p1.getCrit() - 1) + 1;
-	int damage = p1.getStr() - e1.getDef();
-	if (damage < 5)
+	playerDamage = player.getStr() - enemy.getDef();
+	if (playerDamage < 3)
 	{
-		damage = 5;
+		playerDamage = 3;
 	}
-	if (crit == 1)
-	{
-		damage += 10;
-		cout << "CRITICAL HIT!" << endl;
-	}
-	return damage;
 }
 
-int Arena::attackE(Enemy &e1, Player &p1)
+int Arena::getPlayerDamage() const
 {
-	int crit = rand() % (e1.getCrit() - 1)+ 1;
-	int damage = e1.getStr() - p1.getDef();
-	if (damage < 5)
-	{
-		damage = 5;
-	}
-	if (crit == 1)
-	{
-		damage += 10;
-		cout << "CRITICAL HIT!" << endl;
-	}
-	return damage;
+	return playerDamage;
 }
 
-int Arena::pAttackD(Player& p1, Dragon& d1)
+void Arena::setEnemyDamage(Enemy enemy, Player player)
 {
-	int crit = rand() % (p1.getCrit() - 1) + 1;
-	int damage = (p1.getStr() - 20);
-	cout << damage << endl;
-	if (crit == p1.getCrit())
+	enemyDamage = enemy.getStr() - player.getDef();
+	if (enemyDamage < 3)
 	{
-		damage += 10;
+		enemyDamage = 3;
 	}
-	return damage;
 }
+
+int Arena::getEnemyDamage() const
+{
+	return enemyDamage;
+}
+
+
 
 
 

@@ -11,7 +11,7 @@ class Player : public Character
 {
 private:
 	int gold, wCount, aCount;
-	Weapon* weapons[12];
+	Weapon* weapons[11];
 	Armor* armorSets[7];
 
 public:
@@ -27,5 +27,7 @@ public:
 	void setWeaponIndex();
 	void setArmorIndex();
 	void setStats();
+	void showStats();
+	void updateWeapons(Weapon* weapon);
 };
 #endif

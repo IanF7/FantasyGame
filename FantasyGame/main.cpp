@@ -6,6 +6,7 @@
 #include "Weapon.h"
 #include "Armor.h"
 #include "Arena.h"
+#include "Shop.h"
 
 using namespace std;
 
@@ -15,7 +16,9 @@ int main()
 	Enemy e1;
 	Dragon d1;
 	Arena a;
+	Shop s;
 	string input = "";
+	int area = -1;
 	int level = 1;
 	cout << "Welcome to the game! Type 'start' to begin" << endl;
 	while (input != "start")
@@ -26,48 +29,30 @@ int main()
 			input[i] = tolower(input[i]);
 		}
 	}
-	do 
+	do
 	{
-		if (level % 10 != 0)
+		cout << "Enter '1' to enter the arena, '2' to enter the shop, or 0 to quit: ";
+		cin >> area;
+		cout << "" << endl;
+		if (area == 1)
 		{
-			cout << "" << endl;
-			p1.setStats();
-			cout << "Health: " << p1.getHealth() << endl;
-			cout << "str: " << p1.getStr() << endl;
-			cout << "def: " << p1.getDef() << endl;
-			cout << "spe:" << p1.getSpe() << endl;
-			cout << "Stamina: " << p1.getMaxStamina() << endl;
-			cout << "" << endl;
-			e1.setStats();
-			cout << "Health: " << p1.getHealth() << endl;
-			cout << "str: " << e1.getStr() << endl;
-			cout << "def: " << e1.getDef() << endl;
-			cout << "spe:" << e1.getSpe() << endl;
-			cout << "Stamina: " << e1.getMaxStamina() << endl;
-			cout << "" << endl;
-			cout << "" << endl;
-			a.fight(p1, e1);
-			level++;
+			if (level % 10 != 0)
+			{
+				a.battle(p1, e1);
+			}
+			else
+			{
+				cout << "WARNING! BOSS BATTLE AHEAD!" << endl;
+				a.bossBattle(p1, d1);
+			}
 		}
-		else
+		else if (area == 2)
 		{
-			cout << "" << endl;
-			cout << "WARNING! BOSS FIGHT AHEAD!" << endl;
-			p1.setStats();
-			cout << "Health: " << p1.getHealth() << endl;
-			cout << "str: " << p1.getStr() << endl;
-			cout << "def: " << p1.getDef() << endl;
-			cout << "spe:" << p1.getSpe() << endl;
-			cout << "Stamina: " << p1.getMaxStamina() << endl;
-			cout << "" << endl;
-			d1.setStats();
-			a.bossFight(p1, d1);
-			level++;
+			s.menu(p1);
 		}
-		input = "";
-		cout << "Do you wish to fight again? If so, enter 1, to end the game, enter 2: "
-			<< endl;
-		cin >> input;
-	} while (input == "1");
+	} while (area != 0);
+
+
+
 	return 0;
 }

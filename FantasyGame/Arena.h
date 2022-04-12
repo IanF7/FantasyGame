@@ -12,17 +12,17 @@ using namespace std;
 class Arena 
 {
 private:
-	Player p1;
-	Enemy e1;
-	Dragon d1;
+	int playerDamage;
+	int enemyDamage;
 public:
 	Arena();
-	Arena(Player p1, Enemy e1);
-	void fight(Player &p1, Enemy &e1);
-	void bossFight(Player& p1, Dragon& d1);
-	int attackP(Player &p1, Enemy &e1);
-	int attackE(Enemy &e1, Player &p1);
-	int pAttackD(Player& p1, Dragon& d1);
+	Arena(int playerDamage, int enemyDamage);
+	void battle(Player player, Enemy enemy);
+	void bossBattle(Player player, Dragon dragon);
+	void setPlayerDamage(Player player, Enemy enemy);
+	int getPlayerDamage() const;
+	void setEnemyDamage(Enemy enemy, Player player);
+	int getEnemyDamage() const;
 };
 #endif
 

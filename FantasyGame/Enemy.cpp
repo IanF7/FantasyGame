@@ -15,19 +15,14 @@ Enemy::Enemy()
 	weapons[wCount++] = new Weapon(2, 3, 7, 0, "Staff");
 	weapons[wCount++] = new Weapon(7, 4, 1, 0, "Great Sword");
 	weapons[wCount++] = new Weapon(8, 2, 2, 0, "Hammer");
-	weapons[wCount] = new Weapon(4, 2, 6, 0, "Dagger");
+	weapons[wCount++] = new Weapon(4, 2, 6, 0, "Dagger");
 	armorSets[aCount++] = new Armor(8, 7, 5, 0, "Warrior Armor");
 	armorSets[aCount++] = new Armor(5, 3, 12, 0, "Scout Armor");
 	armorSets[aCount++] = new Armor(15, 8, -3, 0, "Knight Armor");
 	armorSets[aCount++] = new Armor(10, 12, -2, 0, "Executioner's Armor");
 	armorSets[aCount++] = new Armor(9, 9, 2, 0, "Samurai Armor");
 	armorSets[aCount++] = new Armor(11, 8, 1, 0, "Chainmail Armor");
-	armorSets[aCount] = new Armor(8, 4, 8, 0, "Martial Artist's Armor");
-	cout << wCount << endl;
-	for (int i = 0; i < wCount + 1; i++)
-	{
-		cout << weapons[i]->getWName() << endl;
-	}
+	armorSets[aCount++] = new Armor(8, 4, 8, 0, "Martial Artist's Armor");
 }
 
 Enemy::Enemy(int str, int spe, int def, int health, int stamina, int maxStamina, int crit, 
@@ -60,12 +55,12 @@ void Enemy::setACount(int aCount)
 
 void Enemy::setWeaponIndex()
 {
-	weaponIndex = rand() % 11;
+	weaponIndex = rand() % getWCount();
 }
 
 void Enemy::setArmorIndex()
 {
-	armorIndex = rand() % 8;
+	armorIndex = rand() % getACount();
 }
 
 void Enemy::setStats()
@@ -131,9 +126,19 @@ void Enemy::setStats()
 	setStamina(stam);
 	setMaxStamina(stam);
 	cout << "" << endl;
+}
+
+void Enemy::showStats()
+{
 	cout << "Enemy Stats: " << endl;
-	cout << "Weapon: " << weapons[getWeaponIndex()]->getWName() << endl;
-	cout << "Armor: " << armorSets[getArmorIndex()]->getAName() << endl;
+	cout << "     Weapon: " << weapons[getWeaponIndex()]->getWName() << endl;
+	cout << "     Armor: " << armorSets[getArmorIndex()]->getAName() << endl;
+	cout << "     Health: " << getHealth() << endl;
+	cout << "     Str: " << getStr() << endl;
+	cout << "     Def: " << getDef() << endl;
+	cout << "     Spe: " << getSpe() << endl;
+	cout << "     Stamina: " << getMaxStamina() << endl;
+	cout << "" << endl;
 }
 
 int Enemy::getReward() const

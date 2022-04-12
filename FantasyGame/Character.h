@@ -38,6 +38,7 @@ public:
 	int getArmorIndex() const;
 	virtual void setArmorIndex();
 	virtual void setStats();
+	virtual void showStats();
 };
 #endif
 
