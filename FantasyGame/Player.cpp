@@ -2,7 +2,7 @@
 
 Player::Player()
 {
-	gold = 100;
+	gold = 10;
 	wCount = 0;
 	aCount = 0;
 	weapons[wCount++] = new Weapon(4, 4, 4, 0, "Sword");
@@ -57,11 +57,18 @@ void Player::setWeaponIndex()
 		cout << "str: " << weapons[i]->getStr() << "  def: " << weapons[i]->getDef() <<
 			"  spe: " << weapons[i]->getSpe() << endl;
 	}
-	do {
-		cout << "Select armor set by entering the number of the corresponding armor set: " << endl;
-		cin >> weaponIndex;
-		weaponIndex--;
-	} while (weaponIndex < 0 || weaponIndex >= sizeof(weapons));
+	cout << "Select weapon by entering the number of the corresponding weapon: " << endl;
+	cin >> weaponIndex;
+	weaponIndex--;
+	if (weaponIndex < 0 || weaponIndex > wCount)
+	{
+		do
+		{
+			cout << "Please enter a valid option: " << endl;
+			cin >> weaponIndex;
+			weaponIndex--;
+		} while (weaponIndex < 0 || weaponIndex > wCount);
+	}
 }
 
 void Player::setArmorIndex()
@@ -73,11 +80,18 @@ void Player::setArmorIndex()
 		cout << "str: " << armorSets[i]->getStr() << "  def: " << armorSets[i]->getDef() <<
 			"  spe: " << armorSets[i]->getSpe() << endl;
 	}
-	do {
-		cout << "Select armor set by entering the number of the corresponding armor set: " << endl;
-		cin >> armorIndex;
-		armorIndex--;
-	} while (armorIndex < 0 || armorIndex >= sizeof(armorSets));
+	cout << "Select armor set by entering the number of the corresponding armor set: " << endl;
+	cin >> armorIndex;
+	armorIndex--;
+	if (armorIndex < 0 || armorIndex > aCount)
+	{
+		do
+		{
+			cout << "Please enter a valid option: " << endl;
+			cin >> armorIndex;
+			armorIndex--;
+		} while (armorIndex < 0 || armorIndex > aCount);
+	}
 }
 
 void Player::setStats()
@@ -93,7 +107,7 @@ void Player::setStats()
 	}
 	else
 	{
-		setCrit(20 - ((20 - getSpe()) / 2));
+		setCrit(20 + ((20 - getSpe()) / 2));
 	}
 	setHealth(50);
 	int stam = ((getStr() + getDef()) / 2) + 20;
@@ -110,6 +124,7 @@ void Player::showStats()
 	cout << "     Str: " << getStr() << endl;
 	cout << "     Def: " << getDef() << endl;
 	cout << "     Spe: " << getSpe() << endl;
+	cout << "     Crit Rate: " << getCrit() << endl;
 	cout << "     Stamina: " << getMaxStamina() << endl;
 	cout << "" << endl;
 }
@@ -117,9 +132,19 @@ void Player::showStats()
 void Player::updateWeapons(Weapon* weapon)
 {
 	weapons[wCount++] = weapon;
-	for (int i = 0; i < wCount; i++)
-	{
-		cout << weapons[i]->getWName() << endl;
-	}
 }
 
+void Player::updateArmor(Armor* armor)
+{
+	armorSets[aCount++] = armor;
+}
+
+ostream& operator<<(ostream& out, const Player& rhs)
+{
+	out << "Gold: " << rhs.getGold() << "\n";
+}
+
+istream& operator>>(istream& in, Player& rhs)
+{
+	// // O: insert return statement here
+}

@@ -84,31 +84,31 @@ void Enemy::setStats()
 		difficulty != "extreme");
 	if (difficulty == "easy")
 	{
-		strRand = rand() % 2 + 14;
-		speRand = rand() % 2 + 14;
-		defRand = rand() % 2 + 14;
-		setReward(rand() % 14 + 1);
+		strRand = rand() % 4 + 14;
+		speRand = rand() % 4 + 14;
+		defRand = rand() % 4 + 14;
+		setReward(rand() % 15 + 1);
 	}
 	else if (difficulty == "medium")
 	{
-		strRand = rand() % 2 + 17;
-		speRand = rand() % 2 + 17;
-		defRand = rand() % 2 + 17;
-		setReward(rand() % 15 + 15);
+		strRand = rand() % 4 + 17;
+		speRand = rand() % 4 + 17;
+		defRand = rand() % 4 + 17;
+		setReward(rand() % 16 + 16);
 	}
 	else if (difficulty == "hard")
 	{
-		strRand = rand() % 2 + 20;
-		speRand = rand() % 2 + 20;
-		defRand = rand() % 2 + 20;
-		setReward(rand() % 15 + 30);
+		strRand = rand() % 4 + 20;
+		speRand = rand() % 4 + 20;
+		defRand = rand() % 4 + 20;
+		setReward(rand() % 16 + 31);
 	}
 	else if (difficulty == "extreme")
 	{
 		strRand = 25;
 		speRand = 25;
 		defRand = 25;
-		setReward(rand() % 15 + 45);
+		setReward(rand() % 16 + 46);
 	}
 	setStr(strRand + weapons[getWeaponIndex()]->getStr() + armorSets[getArmorIndex()]->getStr());
 	setSpe(speRand + weapons[getWeaponIndex()]->getSpe() + armorSets[getArmorIndex()]->getSpe());
@@ -119,10 +119,10 @@ void Enemy::setStats()
 	}
 	else
 	{
-		setCrit(20 - ((20 - getSpe()) / 2));
+		setCrit(20 + ((20 + getSpe()) / 2));
 	}
 	setHealth(50);
-	int stam = ((getStr() + getDef()) / 2) + 20;
+	int stam = ((getStr() - getDef()) / 2) + 20;
 	setStamina(stam);
 	setMaxStamina(stam);
 	cout << "" << endl;
@@ -137,6 +137,7 @@ void Enemy::showStats()
 	cout << "     Str: " << getStr() << endl;
 	cout << "     Def: " << getDef() << endl;
 	cout << "     Spe: " << getSpe() << endl;
+	cout << "     Crit Rate: " << getCrit() << endl;
 	cout << "     Stamina: " << getMaxStamina() << endl;
 	cout << "" << endl;
 }

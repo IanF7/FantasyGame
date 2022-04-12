@@ -17,8 +17,8 @@ private:
 public:
 	Shop();
 	Shop(vector<Weapon*>weaponShop, vector<Armor*>armorShop);
-	void menu(Player player);
-	void buyWeapon(Player player);
-	void buyArmor(Player player);
+	void menu(Player &player);
+	void buyWeapon(Player &player);
+	void buyArmor(Player &player);
 };
 #endif

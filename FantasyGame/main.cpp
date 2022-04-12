@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "Character.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -20,6 +21,8 @@ int main()
 	string input = "";
 	int area = -1;
 	int level = 1;
+	ifstream toSave("save.txt");
+	ofstream fromSave("save.txt");
 	cout << "Welcome to the game! Type 'start' to begin" << endl;
 	while (input != "start")
 	{
@@ -29,10 +32,18 @@ int main()
 			input[i] = tolower(input[i]);
 		}
 	}
+	cout << "Enter '1' to load character or '2' to create new character: " << endl;
 	do
 	{
 		cout << "Enter '1' to enter the arena, '2' to enter the shop, or 0 to quit: ";
 		cin >> area;
+		if (area < 0 || area > 2)
+		{
+			do {
+				cout << "Please enter a valid option" << endl;
+				cin >> area;
+			} while (area < 0 || area > 2);
+		}
 		cout << "" << endl;
 		if (area == 1)
 		{
@@ -50,6 +61,7 @@ int main()
 		{
 			s.menu(p1);
 		}
+		cout << "Do you want to save your status? Yes(1) No(2): " << endl;
 	} while (area != 0);
 
 

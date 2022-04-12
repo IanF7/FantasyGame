@@ -3,6 +3,7 @@
 #define PLAYER_H
 
 #include <iostream>
+#include <fstream>
 #include "Character.h"
 
 using namespace std;
@@ -11,7 +12,7 @@ class Player : public Character
 {
 private:
 	int gold, wCount, aCount;
-	Weapon* weapons[11];
+	Weapon* weapons[12];
 	Armor* armorSets[7];
 
 public:
@@ -29,5 +30,8 @@ public:
 	void setStats();
 	void showStats();
 	void updateWeapons(Weapon* weapon);
+	void updateArmor(Armor* armor);
+	friend ostream& operator<<(ostream& out, const Player& rhs);
+	friend istream& operator>>(istream& in, Player& rhs);
 };
 #endif
