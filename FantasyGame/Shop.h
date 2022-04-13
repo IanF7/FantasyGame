@@ -14,9 +14,10 @@ class Shop
 private:
 	vector<Weapon*>weaponShop;
 	vector<Armor*>armorShop;
+	bool easterEgg;
 public:
 	Shop();
-	Shop(vector<Weapon*>weaponShop, vector<Armor*>armorShop);
+	Shop(vector<Weapon*>weaponShop, vector<Armor*>armorShop, bool easterEgg);
 	void menu(Player &player);
 	void buyWeapon(Player &player);
 	void buyArmor(Player &player);

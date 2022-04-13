@@ -129,6 +129,10 @@ void Arena::battle(Player player, Enemy enemy)
 		{
 			cout << "You enter a defensive stance!" << endl;
 			damageE = getEnemyDamage() - 5;
+			if (damageE < 0)
+			{
+				damageE = 0;
+			}
 			damageP = 0;
 			player.setStamina(player.getStamina() - 10);
 		}
@@ -144,6 +148,10 @@ void Arena::battle(Player player, Enemy enemy)
 		{
 			cout << "The enemy enters a defensive stance!" << endl;
 			damageP = getPlayerDamage() - 5;
+			if (damageP < 0)
+			{
+				damageP = 0;
+			}
 			damageE = 0;
 			enemy.setStamina(enemy.getStamina() - 10);
 		}
@@ -387,6 +395,12 @@ void Arena::setPlayerDamage(Player player, Enemy enemy)
 	{
 		playerDamage = 3;
 	}
+	int crit = rand() % (player.getCrit() + 1) + 1;
+	if (crit == 1)
+	{
+		cout << "CRITICAL HIT!" << endl;
+		playerDamage += 10;
+	}
 }
 
 //getter for playerDamage
@@ -404,6 +418,12 @@ void Arena::setEnemyDamage(Enemy enemy, Player player)
 	if (enemyDamage < 3)
 	{
 		enemyDamage = 3;
+	}
+	int crit = rand() % (enemy.getCrit() + 1) + 1;
+	if (crit == 1)
+	{
+		cout << "CRITICAL HIT!" << endl;
+		enemyDamage += 10;
 	}
 }
 

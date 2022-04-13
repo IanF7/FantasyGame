@@ -108,29 +108,29 @@ void Enemy::setStats()
 		defRand = rand() % 4 + 14;
 		setReward(rand() % 15 + 1);
 	}
-	//sets stats to random number between 17 and 20 and reward to a random number between 17 and 30
+	//sets stats to random number between 17 and 20 and reward to a random number between 10 and 25
 	else if (difficulty == "medium")
 	{
 		strRand = rand() % 4 + 17;
 		speRand = rand() % 4 + 17;
 		defRand = rand() % 4 + 17;
-		setReward(rand() % 16 + 16);
+		setReward(rand() % 16 + 10);
 	}
-	//sets stats to random number between 20 and 23 and reward to a random number between 31 and 45
+	//sets stats to random number between 20 and 23 and reward to a random number between 20 and 35
 	else if (difficulty == "hard")
 	{
 		strRand = rand() % 4 + 20;
 		speRand = rand() % 4 + 20;
 		defRand = rand() % 4 + 20;
-		setReward(rand() % 16 + 31);
+		setReward(rand() % 16 + 20);
 	}
-	//sets stats to 25 and reward to a random number between 45 and 60
+	//sets stats to 25 and reward to a random number between 30 and 45
 	else if (difficulty == "extreme")
 	{
 		strRand = 25;
 		speRand = 25;
 		defRand = 25;
-		setReward(rand() % 16 + 46);
+		setReward(rand() % 16 + 30);
 	}
 	//sets stats equal to numbers generated plus stats from weapon and armor
 	setStr(strRand + weapons[getWeaponIndex()]->getStr() + armorSets[getArmorIndex()]->getStr());
@@ -149,7 +149,7 @@ void Enemy::setStats()
 	//sets health equal to 50
 	setHealth(50);
 	//sets stamina and maxStamina equal to strength plus defense divided by 2, plus 20
-	int stam = ((getStr() - getDef()) / 2) + 20;
+	int stam = ((getStr() + getDef()) / 2) + 20;
 	setStamina(stam);
 	setMaxStamina(stam);
 	cout << "" << endl;

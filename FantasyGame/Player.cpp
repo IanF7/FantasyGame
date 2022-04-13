@@ -4,7 +4,7 @@
 Player::Player()
 {
 	//sets default stats, weapons, and armor for player
-	gold = 100;
+	gold = 10;
 	wCount = 0;
 	aCount = 0;
 	weapons[wCount++] = new Weapon(4, 4, 4, 0, "Sword");

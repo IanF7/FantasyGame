@@ -12,7 +12,7 @@ Shop::Shop()
 	Weapon* greatSword = new Weapon(7, 4, 1, 20, "Great Sword");
 	Weapon* hammer = new Weapon(8, 2, 2, 20, "Hammer");
 	Weapon* dagger = new Weapon(4, 2, 6, 20, "Dagger");
-	Weapon* gun = new Weapon(30, 1, 30, 1000, "Gun");
+	Weapon* gun = new Weapon(20, 1, 20, 700, "Gun");
 	weaponShop.push_back(axe);
 	weaponShop.push_back(spear);
 	weaponShop.push_back(bow);
@@ -23,24 +23,26 @@ Shop::Shop()
 	weaponShop.push_back(dagger);
 	weaponShop.push_back(gun);
 	//creates all available armorSets and adds each one to the most recent element in the vector
-	Armor* scout = new Armor(5, 3, 12, 20, "Scout Armor");
-	Armor* knight = new Armor(15, 8, -3, 20, "Knight Armor");
-	Armor* executioner = new Armor(10, 12, -2, 20, "Executioner's Armor");
-	Armor* samurai = new Armor(9, 9, 2, 20, "Samurai Armor");
-	Armor* chainmail = new Armor(11, 8, 1, 20, "Chainmail Armor");
-	Armor* martialArtist = new Armor(8, 4, 8, 20, "Martial Artist's Armor");
+	Armor* scout = new Armor(5, 3, 12, 30, "Scout Armor");
+	Armor* knight = new Armor(15, 8, -3, 30, "Knight Armor");
+	Armor* executioner = new Armor(10, 12, -2, 30, "Executioner's Armor");
+	Armor* samurai = new Armor(9, 9, 2, 30, "Samurai Armor");
+	Armor* chainmail = new Armor(11, 8, 1, 30, "Chainmail Armor");
+	Armor* martialArtist = new Armor(8, 4, 8, 30, "Martial Artist's Armor");
 	armorShop.push_back(scout);
 	armorShop.push_back(knight);
 	armorShop.push_back(executioner);
 	armorShop.push_back(samurai);
 	armorShop.push_back(chainmail);
 	armorShop.push_back(martialArtist);
+	easterEgg = false;
 
 }
 
 //parameterized constructor
-Shop::Shop(vector<Weapon*> weaponShop, vector<Armor*> armorShop)
+Shop::Shop(vector<Weapon*> weaponShop, vector<Armor*> armorShop, bool easterEgg)
 {
+	this->easterEgg = easterEgg;
 }
 
 //menu function that controls all other fuctions in shop
@@ -82,39 +84,56 @@ void Shop::buyWeapon(Player &player)
 	//creates num and cont to control loops
 	int num = -2;
 	int cont = -1;
-	bool easterEgg = false;
-	//displays the user's current gold
-	cout << "Gold: " << player.getGold() << endl;
 	cout << "Enter the number that corresponds to the weapon you want to buy or 0 to leave: " << endl;
 	//runs while cont equals 1
 	do {
-		//prints out all available weapons
+		//displays the user's current gold
+		cout << "Gold: " << player.getGold() << endl;
+		cout << "" << endl;
 		cout << "Available Weapons: " << endl;
-		cout << weaponShop.size() << endl;
-		for (int i = 0; i < weaponShop.size() - 1; i++)
+		//prints out all available weapons except the last one if the easter egg has not
+		//been found, otherwise prints out all available weapons
+		if (easterEgg)
 		{
-			cout << weaponShop[i]->getWName() << "(" << i + 1 << ")"
-				<< ": " << weaponShop[i]->getCost() << endl;
+			for (int i = 0; i < weaponShop.size(); i++)
+			{
+				cout << weaponShop[i]->getWName() << "(" << i + 1 << ")"
+					<< ": " << weaponShop[i]->getCost() << endl;
+			}
 		}
-		for (int i = 0; i < weaponShop.size(); i++)
+		else
 		{
-			cout << weaponShop[i]->getWName() << "(" << i + 1 << ")"
-				<< ": " << weaponShop[i]->getCost() << endl;
+			for (int i = 0; i < weaponShop.size() - 1; i++)
+			{
+				cout << weaponShop[i]->getWName() << "(" << i + 1 << ")"
+					<< ": " << weaponShop[i]->getCost() << endl;
+			}
 		}
 		//takes in user input and subtracts 1 to correspond with the element in the vector
 		cin >> num;
 		num--;
-		//if the number is not valid, tells the user no weapon was found
-		if (num < 0 || num > weaponShop.size())
+		//if the number is -1, stops code
+		if (num == -1) 
+		{
+			break;
+		}
+		//if num is not in the range of indexes in the vector, tells user that no weapon was found
+		else if (num < 0 || num > weaponShop.size() - 1)
 		{
 			cout << "No weapon found" << endl;
 		}
-		//if num equals -1, ends buyWeapon
+		//if the player has enough gold for the selected weapon, adds the weapon to the player's
+		//inventory and then deletes it from the shop and updates the user's gold
 		else if (player.getGold() >= weaponShop[num]->getCost())
 		{
 			player.updateWeapons(weaponShop[num]);
 			cout << weaponShop[num]->getWName() << " has been added to your inventory" << endl;
+			player.setGold(player.getGold() - weaponShop[num]->getCost());
 			weaponShop.erase(weaponShop.begin() + num);
+			if (num == weaponShop.size())
+			{
+				easterEgg = true;
+			}
 		}
 		else
 		{
@@ -128,14 +147,17 @@ void Shop::buyWeapon(Player &player)
 //buyArmor function that allows the user to buy armor
 void Shop::buyArmor(Player &player)
 {
-	//creates num and cont to control for loops
-	int num = -1;
+	//creates num and cont to control loops
+	int num = -2;
 	int cont = -1;
-	//prints out all available weapons
-	cout << "Gold: " << player.getGold() << endl;
-	cout << "Enter the number that corresponds to the armor set you want to buy or 0 to leave: " << endl;
+	cout << "Enter the number that corresponds to the weapon you want to buy or 0 to leave: " << endl;
+	//runs while cont equals 1
 	do {
+		//displays the user's current gold
+		cout << "Gold: " << player.getGold() << endl;
+		cout << "" << endl;
 		cout << "Available Armor Sets: " << endl;
+		//prints out all available armor sets
 		for (int i = 0; i < armorShop.size(); i++)
 		{
 			cout << armorShop[i]->getAName() << "(" << i + 1 << ")"
@@ -144,16 +166,23 @@ void Shop::buyArmor(Player &player)
 		//takes in user input and subtracts 1 to correspond with the element in the vector
 		cin >> num;
 		num--;
-		//if the number is not valid, tells the user no armor set was found
-		if (num < 0 || num > armorShop.size())
+		//if the number is -1, stops code
+		if (num == -1)
 		{
-			cout << "No armor set found" << endl;
+			break;
 		}
-		if (num == -1) {}
+		//if num is not in the range of indexes in the vector, tells user that no weapon was found
+		else if (num < 0 || num > armorShop.size() - 1)
+		{
+			cout << "No armor found" << endl;
+		}
+		//if the player has enough gold for the selected weapon, adds the armor to the player's
+		//inventory and then deletes it from the shop and updates the user's gold
 		else if (player.getGold() >= armorShop[num]->getCost())
 		{
 			player.updateArmor(armorShop[num]);
 			cout << armorShop[num]->getAName() << " has been added to your inventory" << endl;
+			player.setGold(player.getGold() - weaponShop[num]->getCost());
 			armorShop.erase(armorShop.begin() + num);
 		}
 		else
