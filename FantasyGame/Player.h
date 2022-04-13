@@ -31,7 +31,5 @@ public:
 	void showStats();
 	void updateWeapons(Weapon* weapon);
 	void updateArmor(Armor* armor);
-	friend ostream& operator<<(ostream& out, const Player& rhs);
-	friend istream& operator>>(istream& in, Player& rhs);
 };
 #endif

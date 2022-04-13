@@ -1,5 +1,8 @@
+//Ian Fletcher
+// CST-210 Final Project
+//This is my own code with help from Professor Fritz
+
 #include <iostream>
-#include <fstream>
 #include "Character.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -13,16 +16,18 @@ using namespace std;
 
 int main()
 {
+	//creates objects of classes
 	Player p1;
 	Enemy e1;
 	Dragon d1;
 	Arena a;
 	Shop s;
+	//creates objects to control loops
 	string input = "";
 	int area = -1;
 	int level = 1;
-	ifstream toSave("save.txt");
-	ofstream fromSave("save.txt");
+	int save = 0;
+	//takes in user input to start game and sets it to lower case
 	cout << "Welcome to the game! Type 'start' to begin" << endl;
 	while (input != "start")
 	{
@@ -32,11 +37,13 @@ int main()
 			input[i] = tolower(input[i]);
 		}
 	}
-	cout << "Enter '1' to load character or '2' to create new character: " << endl;
+	//do/while loop that runs until user enters 0
 	do
 	{
+		//prompts user to enter in number to control location
 		cout << "Enter '1' to enter the arena, '2' to enter the shop, or 0 to quit: ";
 		cin >> area;
+		//if the number isn't valid, runs loop to prompt user to enter in a number that does work
 		if (area < 0 || area > 2)
 		{
 			do {
@@ -45,6 +52,7 @@ int main()
 			} while (area < 0 || area > 2);
 		}
 		cout << "" << endl;
+		//runs if the user enters 1 and every 10 fights the user will enter a boss battle
 		if (area == 1)
 		{
 			if (level % 10 != 0)
@@ -57,14 +65,13 @@ int main()
 				a.bossBattle(p1, d1);
 			}
 		}
+		//runs if the user enters 2 to access the shop
 		else if (area == 2)
 		{
 			s.menu(p1);
 		}
-		cout << "Do you want to save your status? Yes(1) No(2): " << endl;
+
 	} while (area != 0);
-
-
 
 	return 0;
 }

@@ -3,37 +3,43 @@
 
 using namespace std;
 
-
+//default constructor
 Arena::Arena() 
 {
+	//sets player and enemy damage to 0
 	playerDamage = 0;
 	enemyDamage = 0;
 }
 
+//parameterized constructor
 Arena::Arena(int playerDamage, int enemyDamage)
 {
 	this->playerDamage = playerDamage;
 	this->enemyDamage = enemyDamage;
 }
 
+//battle function given a player object and an enemy object
 void Arena::battle(Player player, Enemy enemy)
 {
+	//creates variables to control loops and for damage
 	int input = 0;
 	int damageP = 0;
 	int damageE = 0;
-	int enemyAttack = rand() % 9 + 1;
 	bool pFasterE = false;
+	//sets and displays the stats for the player and enemy
 	player.setStats();
 	enemy.setStats();
 	player.showStats();
 	enemy.showStats();
+	//prints out that the battle has started and the player and enemy's health
 	cout << "BATTLE BEGIN!" << endl;
 	cout << "" << endl;
 	cout << "" << endl;
 	cout << "Your Health: " << player.getHealth() << " Your Stamina: "
 		<< player.getStamina() << endl;
 	cout << "Enemy Health: " << enemy.getHealth() << endl;
-	//add check for speed here
+	//compares speeds to determine who goes first and displays proper message and
+	//sets pFasterE to given value
 	if (player.getSpe() >= enemy.getSpe())
 	{
 		cout << "You get the first attack!" << endl;
@@ -45,10 +51,14 @@ void Arena::battle(Player player, Enemy enemy)
 		pFasterE = false;
 	}
 	cout << "" << endl;
+	//runs while both the player and enemy have more than 0 health
 	do
 	{
+		//runs setPlayerDamage and setEnemyDamage
 		setPlayerDamage(player, enemy);
 		setEnemyDamage(enemy, player);
+		//prompts uer to make an action and if invalid number is enter, will prompt user
+		//to enter number until it is valid
 		cout << "Enter the number of the corresponding action: " << endl;
 		cout << "Attack(1): 0 Stamina  Strong Attack(2): 10 Stamina  "
 			"Block(3): 10 Stamina  Dodge(4): 15 Stamina" << endl;
@@ -78,6 +88,9 @@ void Arena::battle(Player player, Enemy enemy)
 				cin >> input;
 			}
 		}
+		//sets enemy attack equal to a random number between 1 and 10
+		int enemyAttack = rand() % 10 + 1;
+		//checks to see if stamina allows for action
 		if (enemy.getStamina() < 10)
 		{
 			enemyAttack = 1;
@@ -87,7 +100,7 @@ void Arena::battle(Player player, Enemy enemy)
 			enemyAttack = rand() % 8 + 1;
 		}
 		cout << "" << endl;
-		//player's turn if offence
+		//player's turn if offencive action is selected
 		if (input == 1)
 		{
 			cout << "You attack the enemy!" << endl;
@@ -99,7 +112,7 @@ void Arena::battle(Player player, Enemy enemy)
 			damageP = getPlayerDamage() + 5;
 			player.setStamina(player.getStamina() - 10);
 		}
-		//enemy's turn if offence
+		//enemy's turn if offencive action in generated
 		if (enemyAttack < 6)
 		{
 			cout << "The enemy attacks!" << endl;
@@ -111,7 +124,7 @@ void Arena::battle(Player player, Enemy enemy)
 			damageE = getEnemyDamage() + 5;
 			enemy.setStamina(enemy.getStamina() - 10);
 		}
-		//player's turn if defensive
+		//player's turn if defensive action is selected
 		if (input == 3)
 		{
 			cout << "You enter a defensive stance!" << endl;
@@ -126,7 +139,7 @@ void Arena::battle(Player player, Enemy enemy)
 			damageP = 0;
 			player.setStamina(player.getStamina() - 15);
 		}
-		//enemy's turn if defensive
+		//enemy's turn if defensive action is generated
 		if (enemyAttack == 8 || enemyAttack == 9)
 		{
 			cout << "The enemy enters a defensive stance!" << endl;
@@ -141,9 +154,11 @@ void Arena::battle(Player player, Enemy enemy)
 			damageE = 0;
 			enemy.setStamina(enemy.getStamina() - 15);
 		}
+		//checks status of pFasterE and will give enemy damage first if pFasterE is true
+		//and player damage first if it is false
 		if (pFasterE)
 		{
-			//sets enemy health and checks if it equals 0
+			//sets enemy health and checks if it equals 0 and displays results if so
 			enemy.setHealth(enemy.getHealth() - damageP);
 			if (enemy.getHealth() <= 0)
 			{
@@ -158,7 +173,7 @@ void Arena::battle(Player player, Enemy enemy)
 					player.getGold() << endl;
 				break;
 			}
-			//sets player health and checks if it equals 0
+			//sets player health and checks if it equals 0 and displays results if so
 			player.setHealth(player.getHealth() - damageE);
 			if (player.getHealth() <= 0)
 			{
@@ -173,7 +188,7 @@ void Arena::battle(Player player, Enemy enemy)
 		}
 		else
 		{
-			//sets player health and checks if it equals 0
+			//sets player health and checks if it equals 0 and displays results if so
 			player.setHealth(player.getHealth() - damageE);
 			if (player.getHealth() <= 0)
 			{
@@ -185,7 +200,7 @@ void Arena::battle(Player player, Enemy enemy)
 				cout << "You Lost!" << endl;
 				break;
 			}
-			//sets enemy health and checks if it equals 0
+			//sets enemy health and checks if it equals 0 and displays results if so
 			enemy.setHealth(enemy.getHealth() - damageP);
 			if (enemy.getHealth() <= 0)
 			{
@@ -201,7 +216,7 @@ void Arena::battle(Player player, Enemy enemy)
 				break;
 			}
 		}
-		//recovers stamina
+		//recovers stamina by 3 if the current stamina is less than the maxStamina - 3
 		if (player.getStamina() <= player.getMaxStamina() - 3)
 		{
 			player.setStamina(player.getStamina() + 3);
@@ -219,25 +234,33 @@ void Arena::battle(Player player, Enemy enemy)
 	} while (player.getHealth() >= 0 && enemy.getHealth() >= 0);
 }
 
+//boss battle function given a player object and a dragon object
 void Arena::bossBattle(Player player, Dragon dragon)
 {
+	//creates variables to control loops and for damage
 	int input = 0;
 	int damageP = 0;
 	int damageE = 0;
-	int enemyAttack = rand() % 6 + 1;
+	//sets the stats for the player and dragon and shows the player's stats
 	player.setStats();
 	dragon.setStats();
+	player.showStats();
+	//prompts uer to make an action and if invalid number is enter, will prompt user
+		//to enter number until it is valid
 	cout << "BATTLE BEGIN!" << endl;
 	cout << "" << endl;
 	cout << "" << endl;
 	cout << "Your Health: " << player.getHealth() << " Your Stamina: "
 		<< player.getStamina() << endl;
 	cout << "Enemy Health: " << dragon.getHealth() << endl;
-	//add check for speed here
 	cout << "" << endl;
+	//runs while both player and dragon health are greater than 0
 	do
 	{
+		//sets the player's damage
 		setPlayerDamage(player, dragon);
+		//prompts uer to make an action and if invalid number is enter, will prompt user
+		//to enter number until it is valid
 		cout << "Enter the number of the corresponding action: " << endl;
 		cout << "Attack(1): 0 Stamina  Strong Attack(2): 10 Stamina  "
 			"Block(3): 10 Stamina  Dodge(4): 15 Stamina" << endl;
@@ -268,7 +291,9 @@ void Arena::bossBattle(Player player, Dragon dragon)
 			}
 		}
 		cout << "" << endl;
-		//player's turn if offence
+		//sets enemyAttack equal to a random number between 1 and 7
+		int enemyAttack = rand() % 7 + 1;
+		//player's turn if offencive action is selected
 		if (input == 1)
 		{
 			cout << "You attack the enemy!" << endl;
@@ -296,7 +321,7 @@ void Arena::bossBattle(Player player, Dragon dragon)
 			cout << "The dragon attacks with its fire!" << endl;
 			damageE = 15;
 		}
-		//player's turn if defensive
+		//player's turn if defensive action is selected
 		if (input == 3)
 		{
 			cout << "You enter a defensive stance!" << endl;
@@ -311,7 +336,7 @@ void Arena::bossBattle(Player player, Dragon dragon)
 			damageP = 0;
 			player.setStamina(player.getStamina() - 15);
 		}
-		//sets enemy health and checks if it equals 0
+		//sets enemy health and checks if it equals 0 and displays results if so
 		dragon.setHealth(dragon.getHealth() - damageP);
 		if (dragon.getHealth() <= 0)
 		{
@@ -326,7 +351,7 @@ void Arena::bossBattle(Player player, Dragon dragon)
 				player.getGold() << endl;
 			break;
 		}
-		//sets player health and checks if it equals 0
+		//sets player health and checks if it equals 0 and displays results if so
 		player.setHealth(player.getHealth() - damageE);
 		if (player.getHealth() <= 0)
 		{
@@ -352,8 +377,11 @@ void Arena::bossBattle(Player player, Dragon dragon)
 	} while (player.getHealth() >= 0 && dragon.getHealth() >= 0);
 }
 
+//setPlayerDamage function
 void Arena::setPlayerDamage(Player player, Enemy enemy)
 {
+	//sets the player's damage equal to their strength minus the enemy's defense and sets it
+	//equal to 3 if its less than 3
 	playerDamage = player.getStr() - enemy.getDef();
 	if (playerDamage < 3)
 	{
@@ -361,13 +389,17 @@ void Arena::setPlayerDamage(Player player, Enemy enemy)
 	}
 }
 
+//getter for playerDamage
 int Arena::getPlayerDamage() const
 {
 	return playerDamage;
 }
 
+//setEnemyDamage function
 void Arena::setEnemyDamage(Enemy enemy, Player player)
 {
+	//sets the enemy's damage equal to their strength minus the player's defense and sets it
+	//equal to 3 if its less than 3
 	enemyDamage = enemy.getStr() - player.getDef();
 	if (enemyDamage < 3)
 	{
@@ -375,6 +407,7 @@ void Arena::setEnemyDamage(Enemy enemy, Player player)
 	}
 }
 
+//getter for enemyDamage
 int Arena::getEnemyDamage() const
 {
 	return enemyDamage;
