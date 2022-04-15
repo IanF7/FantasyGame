@@ -9,7 +9,7 @@ Shop::Shop()
 	Weapon* bow = new Weapon(4, 1, 7, 20, "Bow");
 	Weapon* katana = new Weapon(5, 2, 5, 20, "Katana");
 	Weapon* staff = new Weapon(2, 3, 7, 20, "Staff");
-	Weapon* greatSword = new Weapon(7, 4, 1, 20, "Great Sword");
+	Weapon* greatSword = new Weapon(7, 4, 1, 20, "Great_Sword");
 	Weapon* hammer = new Weapon(8, 2, 2, 20, "Hammer");
 	Weapon* dagger = new Weapon(4, 2, 6, 20, "Dagger");
 	Weapon* gun = new Weapon(20, 1, 20, 700, "Gun");
@@ -23,12 +23,12 @@ Shop::Shop()
 	weaponShop.push_back(dagger);
 	weaponShop.push_back(gun);
 	//creates all available armorSets and adds each one to the most recent element in the vector
-	Armor* scout = new Armor(5, 3, 12, 30, "Scout Armor");
-	Armor* knight = new Armor(15, 8, -3, 30, "Knight Armor");
-	Armor* executioner = new Armor(10, 12, -2, 30, "Executioner's Armor");
-	Armor* samurai = new Armor(9, 9, 2, 30, "Samurai Armor");
-	Armor* chainmail = new Armor(11, 8, 1, 30, "Chainmail Armor");
-	Armor* martialArtist = new Armor(8, 4, 8, 30, "Martial Artist's Armor");
+	Armor* scout = new Armor(5, 3, 12, 30, "Scout_Armor");
+	Armor* knight = new Armor(15, 8, -3, 30, "Knight_Armor");
+	Armor* executioner = new Armor(10, 12, -2, 30, "Executioner_Armor");
+	Armor* samurai = new Armor(9, 9, 2, 30, "Samurai_Armor");
+	Armor* chainmail = new Armor(11, 8, 1, 30, "Chainmail_Armor");
+	Armor* martialArtist = new Armor(8, 4, 8, 30, "Martial_Artist_Armor");
 	armorShop.push_back(scout);
 	armorShop.push_back(knight);
 	armorShop.push_back(executioner);
