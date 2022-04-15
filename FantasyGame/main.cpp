@@ -27,8 +27,8 @@ int main()
 	int area = -1;
 	int level = 1;
 	int save = 0;
-	//takes in user input to start game and sets it to lower case
 	cout << "Welcome to the game! Type 'start' to begin" << endl;
+	//takes in user input to start game and sets it to lower case
 	while (input != "start")
 	{
 		cin >> input;
@@ -36,6 +36,21 @@ int main()
 		{
 			input[i] = tolower(input[i]);
 		}
+	}
+	cout << "To load a character, enter 1, to create a new character enter 2: " << endl;
+	cin >> save;
+	//if the number isn't valid, runs loop to prompt user to enter in a number that does work
+	if (save == 1)
+	{
+		p1.loadCharacter();
+		cout << "Character loaded successfully" << endl;
+	}
+	else if (save != 1 && save != 2)
+	{
+		do {
+			cout << "Please enter a valid option" << endl;
+			cin >> save;
+		} while (save != 1 && save !=2);
 	}
 	//do/while loop that runs until user enters 0
 	do
@@ -70,7 +85,8 @@ int main()
 		{
 			s.menu(p1);
 		}
-
+		cout << "Saving character..." << endl;
+		p1.saveCharacter();
 	} while (area != 0);
 
 	return 0;

@@ -4,12 +4,12 @@
 Player::Player()
 {
 	//sets default stats, weapons, and armor for player
-	gold = 10;
+	gold = 100;
 	wCount = 0;
 	aCount = 0;
 	weapons[wCount++] = new Weapon(4, 4, 4, 0, "Sword");
 	weapons[wCount++] = new Weapon(5, 1, 6, 0, "Fists");
-	armorSets[aCount++] = new Armor(8, 7, 5, 0, "Warrior Armor");
+	armorSets[aCount++] = new Armor(8, 7, 5, 0, "Warrior_Armor");
 }
 
 //parameterized constructor
@@ -173,5 +173,71 @@ void Player::updateArmor(Armor* armor)
 	armorSets[aCount++] = armor;
 }
 
+void Player::saveCharacter()
+{
+	ofstream saveTo("Save.txt");
+	if (!saveTo)
+	{
+		cout << "File not found" << endl;
+		exit(10);
+	}
+	saveTo << getGold() << endl;
+	saveTo << wCount << endl;
+	for (int i = 0; i < wCount; i++)
+	{
+		saveTo << weapons[i]->getStr() /* << " " << weapons[i]->getDef() << " " <<
+			weapons[i]->getSpe() << " " << weapons[i]->getCost() << " " << 
+			weapons[i]->getWName() */<< endl;
+	}
+	saveTo << aCount << endl;
+	for (int i = 0; i < aCount; i++)
+	{
+		saveTo << armorSets[i]->getStr() /* << " " << armorSets[i]->getDef() << " " <<
+			armorSets[i]->getSpe() << " " << armorSets[i]->getCost() << " " <<
+			armorSets[i]->getAName() */<< endl;
+	}
+	saveTo.close();
+}
+
+void Player::loadCharacter()
+{
+	ifstream saveFrom("Save.txt");
+	int numInput = 0;
+	string wordInput = "";
+	string fullName = "";
+	saveFrom >> numInput;
+	setGold(numInput);
+	saveFrom >> numInput;
+	setWCount(numInput);
+	for (int i = 0; i < wCount; i++)
+	{
+		saveFrom >> numInput;
+		weapons[i]->setStr(numInput);
+		saveFrom >> numInput;
+		weapons[i]->setDef(numInput);
+		saveFrom >> numInput;
+		weapons[i]->setSpe(numInput);
+		saveFrom >> numInput;
+		weapons[i]->setCost(numInput);
+		saveFrom >> wordInput;
+		weapons[i]->setWName(wordInput);
+	}
+	saveFrom >> numInput;
+	setACount(numInput);
+	for (int i = 0; i < aCount; i++)
+	{
+		saveFrom >> numInput;
+		armorSets[i]->setStr(numInput);
+		saveFrom >> numInput;
+		armorSets[i]->setDef(numInput);
+		saveFrom >> numInput;
+		armorSets[i]->setSpe(numInput);
+		saveFrom >> numInput;
+		armorSets[i]->setCost(numInput);
+		saveFrom >> wordInput;
+		armorSets[i]->setAName(fullName);
+	}
+
+}
 
 

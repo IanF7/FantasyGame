@@ -1,0 +1,6 @@
+10
+2
+4 4 4 0 Sword
+5 1 6 0 Fists
+1
+8 7 5 0 Warrior_Armor

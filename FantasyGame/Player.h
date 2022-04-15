@@ -12,6 +12,8 @@ class Player : public Character
 {
 private:
 	int gold, wCount, aCount;
+	Weapon weapon;
+	Armor armor;
 	Weapon* weapons[12];
 	Armor* armorSets[7];
 
@@ -31,5 +33,7 @@ public:
 	void showStats();
 	void updateWeapons(Weapon* weapon);
 	void updateArmor(Armor* armor);
+	void saveCharacter();
+	void loadCharacter();
 };
 #endif
