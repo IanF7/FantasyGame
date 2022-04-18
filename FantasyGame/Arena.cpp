@@ -398,7 +398,7 @@ void Arena::setPlayerDamage(Player player, Enemy enemy)
 	int crit = rand() % (player.getCrit() + 1) + 1;
 	if (crit == 1)
 	{
-		cout << "CRITICAL HIT!" << endl;
+		cout << " YOU GOT A CRITICAL HIT!" << endl;
 		playerDamage += 10;
 	}
 }
@@ -422,7 +422,7 @@ void Arena::setEnemyDamage(Enemy enemy, Player player)
 	int crit = rand() % (enemy.getCrit() + 1) + 1;
 	if (crit == 1)
 	{
-		cout << "CRITICAL HIT!" << endl;
+		cout << "ENEMY GOT A CRITICAL HIT!" << endl;
 		enemyDamage += 10;
 	}
 }

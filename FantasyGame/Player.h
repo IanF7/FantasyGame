@@ -33,6 +33,8 @@ public:
 	void showStats();
 	void updateWeapons(Weapon* weapon);
 	void updateArmor(Armor* armor);
+	bool compareWName(string compare);
+	bool compareAName(string compare);
 	void saveCharacter();
 	void loadCharacter();
 };

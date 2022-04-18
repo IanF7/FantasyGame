@@ -45,6 +45,10 @@ int main()
 		p1.loadCharacter();
 		cout << "Character loaded successfully" << endl;
 	}
+	if (save == 2)
+	{
+		cout << "New Character created!" << endl;
+	}
 	else if (save != 1 && save != 2)
 	{
 		do {

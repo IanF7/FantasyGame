@@ -173,71 +173,148 @@ void Player::updateArmor(Armor* armor)
 	armorSets[aCount++] = armor;
 }
 
+//compareWName function
+bool Player::compareWName(string compare)
+{
+	//compares the names of every weapon to the input and returns true if any of them match
+	bool repeat = false;
+	for (int i = 0; i < wCount; i++)
+	{
+		if (compare == weapons[i]->getWName())
+		{
+			repeat = true;
+		}
+	}
+	return repeat;
+}
+
+//compareAName function
+bool Player::compareAName(string compare)
+{
+	//compares the names of every armor to the input and returns true if any of them match
+	bool repeat = false;
+	for (int i = 0; i < aCount; i++)
+	{
+		if (compare == armorSets[i]->getAName())
+		{
+			repeat = true;
+		}
+	}
+	return repeat;
+}
+
+//saveCharacter function
 void Player::saveCharacter()
 {
+	//opens save.txt file
 	ofstream saveTo("Save.txt");
+	//creates string name for adding _ from names with a space so that load works properly
+	string name = "";
+	//chekcs if file was loaded properly
 	if (!saveTo)
 	{
 		cout << "File not found" << endl;
 		exit(10);
 	}
+	//outputs gold and wCount to the file
 	saveTo << getGold() << endl;
 	saveTo << wCount << endl;
+	//outputs data of all weapons to file
 	for (int i = 0; i < wCount; i++)
 	{
+		//adds an _ if there are any spaces in wName of given weapon
+		name = weapons[i]->getWName();
+		for (int j = 0; j < name.length(); j++)
+		{
+			if (name[j] == ' ')
+			{
+				name[j] = '_';
+			}
+		}
 		saveTo << weapons[i]->getStr() << " " << weapons[i]->getDef() << " " <<
 			weapons[i]->getSpe() << " " << weapons[i]->getCost() << " " << 
-			weapons[i]->getWName() << endl;
+			name << endl;
 	}
+	//outputs aCount to file
 	saveTo << aCount << endl;
+	//outputs data of all armor to file
 	for (int i = 0; i < aCount; i++)
 	{
+		//adds an _ if there are any spaces in aName of given armor
+		name = armorSets[i]->getAName();
+		for (int j = 0; j < name.length(); j++)
+		{
+			if (name[j] == ' ')
+			{
+				name[j] = '_';
+			}
+		}
 		saveTo << armorSets[i]->getStr() << " " << armorSets[i]->getDef() << " " <<
 			armorSets[i]->getSpe() << " " << armorSets[i]->getCost() << " " <<
-			armorSets[i]->getAName() << endl;
+			name << endl;
 	}
+	//closes file
 	saveTo.close();
 }
 
+//loadCharacter function
 void Player::loadCharacter()
 {
+	//opens Save.txt
 	ifstream saveFrom("Save.txt");
+	//creates integers and strings to store data
 	int numInput = 0;
 	int strIn, defIn, speIn, costIn = 0;
-	string wordInput = "";
+	string nameInput = "";
+	//inputs gold and wCount from file
 	saveFrom >> numInput;
 	setGold(numInput);
 	saveFrom >> numInput;
 	setWCount(numInput);
+	//inputs stats of all weapons from file
 	for (int i = 0; i < wCount; i++)
 	{
-		saveFrom >> numInput;
-		weapons[i]->setStr(numInput);
-		saveFrom >> numInput;
-		weapons[i]->setDef(numInput);
-		saveFrom >> numInput;
-		weapons[i]->setSpe(numInput);
-		saveFrom >> numInput;
-		weapons[i]->setCost(numInput);
-		saveFrom >> wordInput;
-		weapons[i]->setWName(wordInput);
+		saveFrom >> strIn;
+		saveFrom >> defIn;
+		saveFrom >> speIn;
+		saveFrom >> costIn;
+		saveFrom >> nameInput;
+		//removes _ from weapon name for display
+		for (int j = 0; j < nameInput.length(); j++)
+		{
+			if (nameInput[j] == '_')
+			{
+				nameInput[j] = ' ';
+			}
+		}
+		//creates new weapon with given data
+		weapons[i] = new Weapon(strIn, defIn, speIn, costIn, nameInput);
+		
 	}
+	//inputs aCount from file
 	saveFrom >> numInput;
 	setACount(numInput);
+	//inputs stats of all armor from file
 	for (int i = 0; i < aCount; i++)
 	{
-		saveFrom >> numInput;
-		armorSets[i]->setStr(numInput);
-		saveFrom >> numInput;
-		armorSets[i]->setDef(numInput);
-		saveFrom >> numInput;
-		armorSets[i]->setSpe(numInput);
-		saveFrom >> numInput;
-		armorSets[i]->setCost(numInput);
-		saveFrom >> wordInput;
-		armorSets[i]->setAName(wordInput);
+		saveFrom >> strIn;
+		saveFrom >> defIn;
+		saveFrom >> speIn;
+		saveFrom >> costIn;
+		saveFrom >> nameInput;
+		//removes _ from armor name for display
+		for (int j = 0; j < nameInput.length(); j++)
+		{
+			if (nameInput[j] == '_')
+			{
+				nameInput[j] = ' ';
+			}
+		}
+		//creates new armor with given data
+		armorSets[i] = new Armor(strIn, defIn, speIn, costIn, nameInput);
 	}
-
+	//closes file
+	saveFrom.close();
 }
 
 

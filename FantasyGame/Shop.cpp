@@ -9,10 +9,11 @@ Shop::Shop()
 	Weapon* bow = new Weapon(4, 1, 7, 20, "Bow");
 	Weapon* katana = new Weapon(5, 2, 5, 20, "Katana");
 	Weapon* staff = new Weapon(2, 3, 7, 20, "Staff");
-	Weapon* greatSword = new Weapon(7, 4, 1, 20, "Great_Sword");
+	Weapon* greatSword = new Weapon(7, 4, 1, 20, "Great Sword");
 	Weapon* hammer = new Weapon(8, 2, 2, 20, "Hammer");
 	Weapon* dagger = new Weapon(4, 2, 6, 20, "Dagger");
 	Weapon* gun = new Weapon(20, 1, 20, 700, "Gun");
+	Weapon* lightsaber = new Weapon(50, 50, 50, 0, "Lightsaber");
 	weaponShop.push_back(axe);
 	weaponShop.push_back(spear);
 	weaponShop.push_back(bow);
@@ -22,13 +23,14 @@ Shop::Shop()
 	weaponShop.push_back(hammer);
 	weaponShop.push_back(dagger);
 	weaponShop.push_back(gun);
+	weaponShop.push_back(lightsaber);
 	//creates all available armorSets and adds each one to the most recent element in the vector
-	Armor* scout = new Armor(5, 3, 12, 30, "Scout_Armor");
-	Armor* knight = new Armor(15, 8, -3, 30, "Knight_Armor");
-	Armor* executioner = new Armor(10, 12, -2, 30, "Executioner_Armor");
-	Armor* samurai = new Armor(9, 9, 2, 30, "Samurai_Armor");
-	Armor* chainmail = new Armor(11, 8, 1, 30, "Chainmail_Armor");
-	Armor* martialArtist = new Armor(8, 4, 8, 30, "Martial_Artist_Armor");
+	Armor* scout = new Armor(5, 3, 12, 30, "Scout Armor");
+	Armor* knight = new Armor(15, 8, -3, 30, "Knight Armor");
+	Armor* executioner = new Armor(10, 12, -2, 30, "Executioner's Armor");
+	Armor* samurai = new Armor(9, 9, 2, 30, "Samurai Armor");
+	Armor* chainmail = new Armor(11, 8, 1, 30, "Chainmail Armor");
+	Armor* martialArtist = new Armor(8, 4, 8, 30, "Martial Artist's Armor");
 	armorShop.push_back(scout);
 	armorShop.push_back(knight);
 	armorShop.push_back(executioner);
@@ -36,7 +38,6 @@ Shop::Shop()
 	armorShop.push_back(chainmail);
 	armorShop.push_back(martialArtist);
 	easterEgg = false;
-
 }
 
 //parameterized constructor
@@ -50,6 +51,26 @@ void Shop::menu(Player &player)
 {
 	//creates select to control loops
 	int select = -1;
+	//checks if a weapon or armor already exists in the players inventory and if so deletes
+	//it from the shop
+	bool compare = false;
+	for (int i = 0; i < weaponShop.size(); i++)
+	{
+		compare = player.compareWName(weaponShop[i]->getWName());
+		if (compare)
+		{
+			weaponShop.erase(weaponShop.begin() + i);
+		}
+	}
+	compare = false;
+	for (int i = 0; i < armorShop.size(); i++)
+	{
+		compare = player.compareAName(armorShop[i]->getAName());
+		if (compare)
+		{
+			armorShop.erase(armorShop.begin() + i);
+		}
+	}
 	//runs while the user has not entered 0
 	do
 	{
@@ -117,8 +138,19 @@ void Shop::buyWeapon(Player &player)
 		{
 			break;
 		}
+		//if the number is 1976 (year of Star Wars release) is entered and has not been
+		//purchased yet adds lightsaber to player's inventory
+		else if (num == 1976 && !easterEgg)
+		{
+			cout << "TEST" << endl;
+			player.updateWeapons(weaponShop[weaponShop.size()-1]);
+			cout << weaponShop[weaponShop.size()-1]->getWName()
+				<< " has been added to your inventory" << endl;
+			easterEgg = true;
+			weaponShop.erase(weaponShop.begin() + (weaponShop.size() - 1));
+		}
 		//if num is not in the range of indexes in the vector, tells user that no weapon was found
-		else if (num < 0 || num > weaponShop.size() - 1)
+		else if (num < 0 || num > weaponShop.size() - 2)
 		{
 			cout << "No weapon found" << endl;
 		}
@@ -130,10 +162,6 @@ void Shop::buyWeapon(Player &player)
 			cout << weaponShop[num]->getWName() << " has been added to your inventory" << endl;
 			player.setGold(player.getGold() - weaponShop[num]->getCost());
 			weaponShop.erase(weaponShop.begin() + num);
-			if (num == weaponShop.size())
-			{
-				easterEgg = true;
-			}
 		}
 		else
 		{
