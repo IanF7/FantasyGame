@@ -185,16 +185,16 @@ void Player::saveCharacter()
 	saveTo << wCount << endl;
 	for (int i = 0; i < wCount; i++)
 	{
-		saveTo << weapons[i]->getStr() /* << " " << weapons[i]->getDef() << " " <<
+		saveTo << weapons[i]->getStr() << " " << weapons[i]->getDef() << " " <<
 			weapons[i]->getSpe() << " " << weapons[i]->getCost() << " " << 
-			weapons[i]->getWName() */<< endl;
+			weapons[i]->getWName() << endl;
 	}
 	saveTo << aCount << endl;
 	for (int i = 0; i < aCount; i++)
 	{
-		saveTo << armorSets[i]->getStr() /* << " " << armorSets[i]->getDef() << " " <<
+		saveTo << armorSets[i]->getStr() << " " << armorSets[i]->getDef() << " " <<
 			armorSets[i]->getSpe() << " " << armorSets[i]->getCost() << " " <<
-			armorSets[i]->getAName() */<< endl;
+			armorSets[i]->getAName() << endl;
 	}
 	saveTo.close();
 }
@@ -203,8 +203,8 @@ void Player::loadCharacter()
 {
 	ifstream saveFrom("Save.txt");
 	int numInput = 0;
+	int strIn, defIn, speIn, costIn = 0;
 	string wordInput = "";
-	string fullName = "";
 	saveFrom >> numInput;
 	setGold(numInput);
 	saveFrom >> numInput;
@@ -235,7 +235,7 @@ void Player::loadCharacter()
 		saveFrom >> numInput;
 		armorSets[i]->setCost(numInput);
 		saveFrom >> wordInput;
-		armorSets[i]->setAName(fullName);
+		armorSets[i]->setAName(wordInput);
 	}
 
 }
