@@ -269,6 +269,7 @@ void Player::saveCharacter()
 			armorSets[i]->getSpe() << " " << armorSets[i]->getCost() << " " <<
 			name << endl;
 	}
+	//outputs level user left off on
 	saveTo << getLevel() << endl;
 	//closes file
 	saveTo.close();
@@ -330,6 +331,7 @@ void Player::loadCharacter()
 		//creates new armor with given data
 		armorSets[i] = new Armor(strIn, defIn, speIn, costIn, nameInput);
 	}
+	//inputs level user left off on
 	saveFrom >> numInput;
 	setLevel(numInput);
 	//closes file
