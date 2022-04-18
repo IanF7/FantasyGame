@@ -1,7 +1,7 @@
-80
+100
 2
 4 4 4 0 Sword
 5 1 6 0 Fists
-2
+1
 8 7 5 0 Warrior_Armor
-15 8 -3 30 Knight_Armor
+1

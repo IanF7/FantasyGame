@@ -76,7 +76,7 @@ void Shop::menu(Player &player)
 	{
 		//prompts the user to enter a number
 		cout << "Welcome to the shop! To buy weapons, enter 1, to buy armor enter 2,"
-			<< " to leave enter 0" << endl;
+			<< " to leave enter 0: " << endl;
 		cin >> select;
 		//prompts the user to enter a valid number if the number is invalid
 		if (select != 1 && select != 2 && select != 0)
@@ -142,7 +142,6 @@ void Shop::buyWeapon(Player &player)
 		//purchased yet adds lightsaber to player's inventory
 		else if (num == 1976 && !easterEgg)
 		{
-			cout << "TEST" << endl;
 			player.updateWeapons(weaponShop[weaponShop.size()-1]);
 			cout << weaponShop[weaponShop.size()-1]->getWName()
 				<< " has been added to your inventory" << endl;

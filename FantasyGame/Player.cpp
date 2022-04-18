@@ -7,18 +7,20 @@ Player::Player()
 	gold = 100;
 	wCount = 0;
 	aCount = 0;
+	level = 1;
 	weapons[wCount++] = new Weapon(4, 4, 4, 0, "Sword");
 	weapons[wCount++] = new Weapon(5, 1, 6, 0, "Fists");
-	armorSets[aCount++] = new Armor(8, 7, 5, 0, "Warrior_Armor");
+	armorSets[aCount++] = new Armor(8, 7, 5, 0, "Warrior Armor");
 }
 
 //parameterized constructor
 Player::Player(int str, int spe, int def, int health, int stamina, int crit, int maxStamina,
-	int weaponIndex, int armorIndex, int gold, int wCount, int aCount)
+	int weaponIndex, int armorIndex, int gold, int wCount, int aCount, int level)
 {
 	this->gold = gold;
 	this->wCount = wCount;
 	this->aCount = aCount;
+	this->level = level;
 }
 
 //getter for gold
@@ -57,6 +59,18 @@ void Player::setACount(int aCount)
 	this->aCount = aCount;
 }
 
+//getter for level
+int Player::getLevel() const
+{
+	return level;
+}
+
+//setter for level
+void Player::setLevel(int level)
+{
+	this->level = level;
+}
+
 //setWeaponIndex function that selects weapon the user will use
 void Player::setWeaponIndex()
 {
@@ -69,8 +83,9 @@ void Player::setWeaponIndex()
 			"  spe: " << weapons[i]->getSpe() << endl;
 	}
 	//prompts user to choose weapon by entering a number 
-	cout << "Select weapon by entering the number of the corresponding weapon: " << endl;
+	cout << "Select weapon by entering the number of the corresponding weapon: ";
 	cin >> weaponIndex;
+	cout << "" << endl;
 	//subtracts 1 to correspond with position in array
 	weaponIndex--;
 	//runs if the user enters an invalid number and will run until the user enters a valid number
@@ -97,8 +112,9 @@ void Player::setArmorIndex()
 			"  spe: " << armorSets[i]->getSpe() << endl;
 	}
 	//prompts user to choose armor set by entering a number
-	cout << "Select armor set by entering the number of the corresponding armor set: " << endl;
+	cout << "Select armor set by entering the number of the corresponding armor set: ";
 	cin >> armorIndex;
+	cout << "" << endl;
 	//subtracts 1 to correspond with position in array
 	armorIndex--;
 	//runs if the user enters an invalid number and will run until the user enters a valid number
@@ -253,6 +269,7 @@ void Player::saveCharacter()
 			armorSets[i]->getSpe() << " " << armorSets[i]->getCost() << " " <<
 			name << endl;
 	}
+	saveTo << getLevel() << endl;
 	//closes file
 	saveTo.close();
 }
@@ -313,8 +330,11 @@ void Player::loadCharacter()
 		//creates new armor with given data
 		armorSets[i] = new Armor(strIn, defIn, speIn, costIn, nameInput);
 	}
+	saveFrom >> numInput;
+	setLevel(numInput);
 	//closes file
 	saveFrom.close();
 }
+
 
 

@@ -23,6 +23,7 @@ public:
 	int getPlayerDamage() const;
 	void setEnemyDamage(Enemy enemy, Player player);
 	int getEnemyDamage() const;
+	int checkCrit(int c);
 };
 #endif
 

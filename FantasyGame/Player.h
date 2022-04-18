@@ -11,7 +11,7 @@ using namespace std;
 class Player : public Character
 {
 private:
-	int gold, wCount, aCount;
+	int gold, wCount, aCount, level;
 	Weapon weapon;
 	Armor armor;
 	Weapon* weapons[12];
@@ -20,13 +20,15 @@ private:
 public:
 	Player();
 	Player(int str, int spe, int def, int health, int stamina, int crit, int maxStamina,
-		int weaponIndex, int armorIndex, int gold, int wCount, int aCount);
+		int weaponIndex, int armorIndex, int gold, int wCount, int aCount, int level);
 	int getGold() const;
 	void setGold(int gold);
 	int getWCount() const;
 	void setWCount(int wCount);
 	int getACount() const;
 	void setACount(int aCount);
+	int getLevel() const;
+	void setLevel(int level);
 	void setWeaponIndex();
 	void setArmorIndex();
 	void setStats();

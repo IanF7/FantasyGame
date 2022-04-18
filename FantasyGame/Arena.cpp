@@ -28,6 +28,7 @@ void Arena::battle(Player player, Enemy enemy)
 	bool pFasterE = false;
 	//sets and displays the stats for the player and enemy
 	player.setStats();
+	cout << "" << endl;
 	enemy.setStats();
 	player.showStats();
 	enemy.showStats();
@@ -105,23 +106,27 @@ void Arena::battle(Player player, Enemy enemy)
 		{
 			cout << "You attack the enemy!" << endl;
 			damageP = getPlayerDamage();
+			damageP += checkCrit(player.getCrit());
 		}
 		else if (input == 2)
 		{
 			cout << "You strongly attack the enemy!" << endl;
 			damageP = getPlayerDamage() + 5;
+			damageP += checkCrit(player.getCrit());
 			player.setStamina(player.getStamina() - 10);
 		}
 		//enemy's turn if offencive action in generated
 		if (enemyAttack < 6)
 		{
 			cout << "The enemy attacks!" << endl;
+			damageE += checkCrit(enemy.getCrit());
 			damageE = getEnemyDamage();
 		}
 		else if (enemyAttack == 6 || enemyAttack == 7)
 		{
 			cout << "The enemy attacks you strongly!" << endl;
 			damageE = getEnemyDamage() + 5;
+			damageE += checkCrit(enemy.getCrit());
 			enemy.setStamina(enemy.getStamina() - 10);
 		}
 		//player's turn if defensive action is selected
@@ -175,6 +180,7 @@ void Arena::battle(Player player, Enemy enemy)
 				cout << "Your Health: " << player.getHealth() << " Your Stamina: "
 					<< player.getStamina() << endl;
 				cout << "Enemy Health: " << enemy.getHealth() << endl;
+				cout << "" << endl;
 				cout << "You Win!" << endl;
 				player.setGold(enemy.getReward() + player.getGold());
 				cout << "Gold Earned: " << enemy.getReward() << "   Total Gold: " <<
@@ -190,6 +196,7 @@ void Arena::battle(Player player, Enemy enemy)
 				cout << "Your Health: " << player.getHealth() << " Your Stamina: "
 					<< player.getStamina() << endl;
 				cout << "Enemy Health: " << enemy.getHealth() << endl;
+				cout << "" << endl;
 				cout << "You Lost!" << endl;
 				break;
 			}
@@ -205,6 +212,7 @@ void Arena::battle(Player player, Enemy enemy)
 				cout << "Your Health: " << player.getHealth() << " Your Stamina: "
 					<< player.getStamina() << endl;
 				cout << "Enemy Health: " << enemy.getHealth() << endl;
+				cout << "" << endl;
 				cout << "You Lost!" << endl;
 				break;
 			}
@@ -217,6 +225,7 @@ void Arena::battle(Player player, Enemy enemy)
 				cout << "Your Health: " << player.getHealth() << " Your Stamina: "
 					<< player.getStamina() << endl;
 				cout << "Enemy Health: " << enemy.getHealth() << endl;
+				cout << "" << endl;
 				cout << "You Win!" << endl;
 				player.setGold(enemy.getReward() + player.getGold());
 				cout << "Gold Earned: " << enemy.getReward() << "   Total Gold: " <<
@@ -306,11 +315,13 @@ void Arena::bossBattle(Player player, Dragon dragon)
 		{
 			cout << "You attack the enemy!" << endl;
 			damageP = getPlayerDamage();
+			damageP += checkCrit(player.getCrit());
 		}
 		else if (input == 2)
 		{
 			cout << "You strongly attack the enemy!" << endl;
 			damageP = getPlayerDamage() + 5;
+			damageP += checkCrit(player.getCrit());
 			player.setStamina(player.getStamina() - 10);
 		}
 		//dragon's turn
@@ -353,6 +364,7 @@ void Arena::bossBattle(Player player, Dragon dragon)
 			cout << "Your Health: " << player.getHealth() << " Your Stamina: "
 					<< player.getStamina() << endl;
 			cout << "Enemy Health: " << dragon.getHealth() << endl;
+			cout << "" << endl;
 			cout << "You Win!" << endl;
 			player.setGold(dragon.getReward() + player.getGold());
 			cout << "Gold Earned: " << dragon.getReward() << "   Total Gold: " <<
@@ -368,6 +380,7 @@ void Arena::bossBattle(Player player, Dragon dragon)
 			cout << "Your Health: " << player.getHealth() << " Your Stamina: "
 				<< player.getStamina() << endl;
 			cout << "Enemy Health: " << dragon.getHealth() << endl;
+			cout << "" << endl;
 			cout << "You Lost!" << endl;
 			break;
 		}
@@ -395,12 +408,6 @@ void Arena::setPlayerDamage(Player player, Enemy enemy)
 	{
 		playerDamage = 3;
 	}
-	int crit = rand() % (player.getCrit() + 1) + 1;
-	if (crit == 1)
-	{
-		cout << " YOU GOT A CRITICAL HIT!" << endl;
-		playerDamage += 10;
-	}
 }
 
 //getter for playerDamage
@@ -419,18 +426,24 @@ void Arena::setEnemyDamage(Enemy enemy, Player player)
 	{
 		enemyDamage = 3;
 	}
-	int crit = rand() % (enemy.getCrit() + 1) + 1;
-	if (crit == 1)
-	{
-		cout << "ENEMY GOT A CRITICAL HIT!" << endl;
-		enemyDamage += 10;
-	}
 }
 
 //getter for enemyDamage
 int Arena::getEnemyDamage() const
 {
 	return enemyDamage;
+}
+
+int Arena::checkCrit(int c)
+{
+	int critDamage = 0;
+	critDamage = rand() % (c + 1) + 1;
+	if (critDamage == 1)
+	{
+		cout << "CRITICAL HIT!" << endl;
+		critDamage = 10;
+	}
+	return critDamage;
 }
 
 
