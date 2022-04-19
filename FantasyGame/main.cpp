@@ -61,10 +61,11 @@ int main()
 	do
 	{
 		//prompts user to enter in number to control location
-		cout << "Enter '1' to enter the arena, '2' to enter the shop, or 0 to quit: ";
+		cout << "Enter '1' to enter the arena, '2' to enter the shop, '3' to show stats," <<
+			" or '0' to quit : ";
 		cin >> area;
 		//if the number isn't valid, runs loop to prompt user to enter in a number that does work
-		if (area < 0 || area > 2)
+		if (area < 0 || area > 3)
 		{
 			do {
 				cout << "Please enter a valid option" << endl;
@@ -93,6 +94,10 @@ int main()
 		else if (area == 2)
 		{
 			s.menu(p1);
+		}
+		else if (area == 3)
+		{
+			p1.showStats();
 		}
 		cout << "" << endl;
 		cout << "Saving character..." << endl;
