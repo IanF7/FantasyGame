@@ -12,8 +12,6 @@ class Player : public Character
 {
 private:
 	int gold, wCount, aCount, level;
-	Weapon weapon;
-	Armor armor;
 	Weapon* weapons[12];
 	Armor* armorSets[7];
 

@@ -13,8 +13,7 @@ protected:
 	int weaponIndex, armorIndex;
 
 private:
-	int str, spe, def, health, stamina, crit;
-	int maxStamina;
+	int str, spe, def, health, stamina, maxStamina, crit;
 public:
 	Character();
 	Character(int str, int spe, int def, int health, int stamina, int maxStamina, int crit,
