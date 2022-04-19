@@ -17,8 +17,8 @@ private:
 public:
 	Arena();
 	Arena(int playerDamage, int enemyDamage);
-	void battle(Player player, Enemy enemy);
-	void bossBattle(Player player, Dragon dragon);
+	void battle(Player &player, Enemy enemy);
+	void bossBattle(Player &player, Dragon dragon);
 	void setPlayerDamage(Player player, Enemy enemy);
 	int getPlayerDamage() const;
 	void setEnemyDamage(Enemy enemy, Player player);

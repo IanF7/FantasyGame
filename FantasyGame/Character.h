@@ -11,7 +11,6 @@ class Character
 {
 protected:
 	int weaponIndex, armorIndex;
-
 private:
 	int str, spe, def, health, stamina, maxStamina, crit;
 public:

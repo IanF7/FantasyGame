@@ -19,7 +19,7 @@ Arena::Arena(int playerDamage, int enemyDamage)
 }
 
 //battle function given a player object and an enemy object
-void Arena::battle(Player player, Enemy enemy)
+void Arena::battle(Player &player, Enemy enemy)
 {
 	//creates variables to control loops and for damage
 	int input = 0;
@@ -252,7 +252,7 @@ void Arena::battle(Player player, Enemy enemy)
 }
 
 //boss battle function given a player object and a dragon object
-void Arena::bossBattle(Player player, Dragon dragon)
+void Arena::bossBattle(Player &player, Dragon dragon)
 {
 	//creates variables to control loops and for damage
 	int input = 0;
