@@ -76,8 +76,9 @@ void Shop::menu(Player &player)
 	{
 		//prompts the user to enter a number
 		cout << "Welcome to the shop! To buy weapons, enter 1, to buy armor enter 2,"
-			<< " to leave enter 0: " << endl;
+			<< " to leave enter 0: ";
 		cin >> select;
+		cout << "" << endl;
 		//prompts the user to enter a valid number if the number is invalid
 		if (select != 1 && select != 2 && select != 0)
 		{
